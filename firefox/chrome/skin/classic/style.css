@@ -1,0 +1,7 @@
+#screenshot-sender-button {
+  list-style-image: url("chrome://fulmo/skin/images/icon24.png");
+}
+
+toolbar[iconsize="small"] #screenshot-sender-button {
+  list-style-image: url("chrome://fulmo/skin/images/icon16.png");
+}

@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title class="i18n">fulmo_setting_title</title>
+<link rel="stylesheet" type="text/css" href="css/settings.css" />
+<link rel="stylesheet" type="text/css" href="css/themes/d/jquery-ui-1.8.14.custom.css" />
+<script type="text/javascript" src="scripts/http.js" ></script>
+<script type="text/javascript" src="scripts/libs/xmlrpc_lib.js" ></script>
+<script type="text/javascript" src="scripts/libs/jquery-1.5.2.min.js" ></script>
+<script type="text/javascript" src="scripts/libs/formatstring.js" ></script>
+<script type="text/javascript" src="scripts/libs/jquery-ui-1.8.12.custom.min.js" ></script>
+<script type="text/javascript" src="scripts/libs/sjcl.js" ></script>
+<script type="text/javascript" src="scripts/settings-manager.js" ></script>
+<script type="text/javascript" src="scripts/settings.js" ></script>
+<script type="text/javascript" src="scripts/startup-settings.js" ></script>
+</head>
+<body>
+    <div id="tabs">
+        <h1 class="i18n">fulmo_setting_title</h1>
+      <div class="tab-page" id="screenshot-sender-account">
+            <h2 class="i18n">fulmo_setting_h2_account</h2>
+            <div class="tab-page-contents">
+            <div id="screenshot-sender-account-button-bar">
+              <button id = "screenshot-sender-account-add-button">
+                  <img src="images/new_site.png" /><span class="i18n">fulmo_setting_button_new_account</span>
+              </button>
+              <button id = "screenshot-sender-account-copy-button">
+                  <img src="images/copy.png" /><span class="i18n">fulmo_setting_button_copy_account</span>
+              </button>
+              <button id = "screenshot-sender-account-delete-button">
+                  <img src="images/delete.png" /><span class="i18n">fulmo_setting_button_delete_account</span>
+              </button>
+              <button id = "screenshot-sender-account-set-default-button">
+                  <img src="images/set_default_site.png" /><span class="i18n">fulmo_setting_button_set_default_account</span>
+              </buitton>
+            </div>
+            <div>
+                    <select id="screenshot-sender-account-list" size="12"></select>
+                    <div id="screenshot-sender-account-editor-wrap">
+                <fieldset id="screenshot-sender-account-editor">
+                    <label id="screenshot-sender-account-name-lv" ><span class="i18n">fulmo_setting_label_name</span>
+                        <input id="screenshot-sender-account-name" />
+                    </label>
+                    <br />
+                    <label id="screenshot-sender-account-url-lv"><span class="i18n">fulmo_setting_label_url</span>
+                        <input id="screenshot-sender-account-url" />
+                            </label>
+                    <br />
+                    <label id="screenshot-sender-account-site-type-lv"><span class="i18n">fulmo_setting_label_site_type</span>
+                        <select id="screenshot-sender-account-site-type">
+                            <option value="trac"/>Trac &amp; ciklone.com</option>
+                        </select>
+                      </label>
+                    <br />
+                    <label id="screenshot-sender-account-auth-type-lv"><span class="i18n">fulmo_setting_label_auth_type</span>
+                        <select id="screenshot-sender-account-auth-type">
+                        <option value="0" class="i18n" />fulmo_setting_option_auth_type_no_auth</option>
+                        <option value="1" class="i18n" />fulmo_setting_option_auth_type_http</option>
+                        </select>
+                      </label>
+                    <br />
+                    <label id="screenshot-sender-account-user-id-lv"><span class="i18n">fulmo_setting_label_user_id</span>
+                        <input id="screenshot-sender-account-user-id" />
+                    </label>
+                    <br />
+                    <label id="screenshot-sender-account-password-lv"><span class="i18n">fulmo_setting_label_password</span>
+                        <input type="password" id="screenshot-sender-account-password" />
+                    </label>
+                </fieldset>
+                <button id="screenshot-sender-account-test-button" class="i18n">fulmo_setting_button_connect_test</button>
+                <div id="screenshot-sender-account-test-progressbar-wrapper" >
+                    <div id="screenshot-sender-account-test-progressbar" ></div>
+                    <div id="screenshot-sender-account-test-progressbar-message" class="i18n">fulmo_setting_message_testing_now</div>
+                  </div>
+                    </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-page" id="screenshot-sender-general">
+            <h2 class="i18n">fulmo_setting_h2_contenxt_menu</h2>
+            <div class="tab-page-contents">
+                <select id="screenshot-sender-context-menu-list" size="8" multiple="multiple">
+                    <option value="1" class="i18n">fulmo_action_all_send</option>
+                    <option value="2" class="i18n">fulmo_action_view_send</option>
+                    <option value="3" class="i18n">fulmo_action_parts_send</option>
+                    <option value="4" class="i18n">fulmo_action_no_image_send</option>
+                </select>
+                <p>
+                    <span class="i18n">fulmo_setting_message_context_menu_help</span>
+                </p>
+            </div>
+            <div id="page-buttons">
+                <button id="screenshot-sender-ok" class="i18n">fulmo_general_button_ok</button>
+                <!-- <button id="screenshot-sender-cancel" class="i18n">fulmo_general_button_cancel</button> -->
+            </div>
+      </div>
+    </div>
+    <div id="screenshot-sender-account-test-dialog" class="i18n-title" title="fulmo_test_title">
+        <p class="i18n">fulmo_test_message_description_1</p>
+        <p class="i18n">fulmo_test_message_description_2</p>
+        <form action="#">
+        <fieldset>
+        <label><span class="i18n">fulmo_setting_label_user_id</span><input id="screenshot-sender-account-test-id" /></label><br />
+        <label><span class="i18n">fulmo_setting_label_password</span><input type="password" id="screenshot-sender-account-test-password" /></label>
+        </fieldset>
+        </form>
+    </div>
+</body>
+</html>

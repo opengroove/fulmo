@@ -1,0 +1,7 @@
+content fulmo chrome/content/
+overlay chrome://browser/content/browser.xul chrome://fulmo/content/overlay.xul
+overlay chrome://global/content/customizeToolbar.xul chrome://fulmo/content/customizeToolbarOverlay.xul
+
+skin  fulmo classic/1.0  chrome/skin/classic/
+locale fulmo en-US chrome/locale/en/
+locale fulmo ja-JP chrome/locale/ja/

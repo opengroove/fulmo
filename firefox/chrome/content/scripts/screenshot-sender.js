@@ -1,0 +1,1 @@
+../../../../chrome/scripts/screenshot-sender.js

@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title class="i18n">fulmo_main_title</title>
+<link rel="stylesheet" type="text/css" href="css/themes/d/jquery-ui-1.8.14.custom.css" />
+<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.css" />
+<link rel="stylesheet" type="text/css" href="css/main.css" />
+<link rel="INDEX" href="./" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<script type="text/javascript" src="scripts/http.js"></script>
+<script type="text/javascript" src="scripts/libs/xmlrpc_lib.js"></script>
+<script type="text/javascript" src="scripts/libs/jquery-1.5.2.min.js"></script>
+<script type="text/javascript" src="scripts/libs/jquery-ui-1.8.12.custom.min.js" ></script>
+<script type="text/javascript" src="scripts/libs/jquery.multiselect.js" ></script>
+<script type="text/javascript" src="scripts/libs/jquery.infieldlabel.js" ></script>
+<script type="text/javascript" src="scripts/libs/sjcl.js" ></script>
+<script type="text/javascript" src="scripts/settings-manager.js" ></script>
+<script type="text/javascript" src="scripts/main.js"></script>
+<script type="text/javascript" src="scripts/startup-main.js"></script>
+</head>
+<body>
+<form method="post" action="#">
+<div id="screenshot-sender-header" >
+    <img id="screenshot-sender-application-image" width="32" height="32" /><h1 class="i18n">fulmo_main_h1</h1>
+    <div id="screenshot-sender-main-image-filed">
+        <p><span class="i18n">fulmo_main_anchor_attachment</span></p>
+        <div id="image-wrap"><img id="screenshot-sender-main-image" /></div>
+    </div>
+    <select id="screenshot-sender-main-site"><option value="0" class="i18n">screenshot_general_message_please_select</option></select>
+</div>
+<h2 class="i18n">fulmo_main_h2_create_ticket</h2>
+<div id="screenshot-sender-main-body-filed">
+    <p><label class="screenshot-sender-main-item-label i18n" for="screenshot-sender-property-sumarry">fulmo_main_label_summary</label><input type="text" id="screenshot-sender-property-sumarry" /></p>
+    <p id="screenshot-sender-property-reporter-wrapper"><label id="screenshot-sender-property-reporter-lv" class="screenshot-sender-main-item-label i18n" for="screenshot-sender-property-reporter">fulmo_main_label_reporter</label><input type="text" id="screenshot-sender-property-reporter" /></p>
+    <p><label class="screenshot-sender-main-item-label i18n" for="screenshot-sender-property-description">fulmo_main_label_description</label><textarea id="screenshot-sender-property-description" cols="60" rows="7" ></textarea></p>
+</div>
+<h2 class="i18n">fulmo_main_h2_attribute</h2>
+<ul id="property-block"></ul>
+<div id="screenshot-sender-property-loading"><img /></div>
+<div id="screenshot-sender-property-block-footer"></div>
+</form>
+
+<div id="footer">
+<div id="screenshot-sender-main-submit-wrapeer"><button id="screenshot-sender-main-submit" class="i18n">fulmo_main_button_title_send_ticket</button></div>
+<label id="screenshot-sender-open-ticket-wrapper" ><input type="checkbox" id="screenshot-sender-open-ticket" vlaue="1" /><span class="i18n">fulmo_main_label_view_ticket</span></label>
+</div>
+
+<div id="screenshot-sender-account-dialog" class="i18n-title" title="fulmo_login_title">
+    <p class="i18n">fulmo_login_message_desctiption</p>
+    <form action="#">
+    <fieldset id="screenshot-sender-login-field">
+    <span class="label i18n">fulmo_login_label_account_name</span><span id="screenshot-sender-account-name"></span><br />
+    <label><span class="i18n">fulmo_login_label_user_id</span><input id="screenshot-sender-account-id" /></label><br />
+    <label><span class="i18n">fulmo_login_label_password</span><input type="password" id="screenshot-sender-account-password" /></label>
+    </fieldset>
+    </form>
+</div>
+
+</body>
+</html>

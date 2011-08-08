@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<!DOCTYPE dialog SYSTEM "chrome://fulmo/locale/screenshot_sender.dtd">
+<dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+  title="&fulmo_test_title;" ondialogaccept="return onOk()">
+  <script type="application/x-javascript" src="scripts/login.js" />
+  <vbox>
+    <description>&fulmo_test_message_description_1;</description>
+    <description>&fulmo_test_message_description_2;</description>
+    <groupbox id="screenshot-sender-account-editor">
+      <grid>
+        <columns>
+          <column />
+          <column flex="1" />
+        </columns>
+        <rows>
+          <row>
+            <label id="screenshot-sender-axccount-user-id-lv" value="&fulmo_setting_label_user_id;" />
+            <textbox id="screenshot-sender-account-user-id" clickSelectsAll="true" />
+          </row>
+          <row>
+            <label id="screenshot-sender-account-password-lv" value="&fulmo_setting_label_password;" />
+            <textbox type="password" id="screenshot-sender-account-password" clickSelectsAll="true" />
+          </row>
+        </rows>
+      </grid>
+    </groupbox>
+  </vbox>
+</dialog>

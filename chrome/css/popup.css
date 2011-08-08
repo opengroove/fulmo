@@ -1,0 +1,64 @@
+* {
+ font-family: "Arial", "san-serif", "メイリオ", "ＭＳ Ｐゴシック","Osaka","verdana","palatino";
+}
+
+body {
+ font-size: 12px;
+ margin: 0;
+ padding: 0;
+}
+
+ul {
+ margin: 0;
+ padding: 0;
+}
+
+li {
+ list-style: none;
+ border: 1px solid #ffffff;
+}
+
+li a {
+ display: block;
+ padding: 6px 16px 0px 40px;
+ background: no-repeat 16px 6px;
+ text-decoration: none;
+ color: #333;
+ white-space: nowrap;
+ height: 20px;
+}
+
+li:hover {
+ background: url(../images/menu_bg.png) repeat-x 0 0;
+ border: 1px solid #cccccc;
+ border-radius: 4px;
+ -moz-border-radius: 4px;
+}
+
+li.sparator:hover {
+ border: 1px solid #ffffff;
+ background: #ffffff;
+}
+
+li a:hover {
+}
+
+#send-all-document-button {
+ background-image: url(../images/get_document.png);
+}
+
+#send-inner-window-button {
+ background-image: url(../images/get_window.png);
+}
+
+#send-selected-field-button {
+ background-image: url(../images/get_selected_area.png);
+}
+
+#send-without-image-button {
+ background-image: url(../images/create_ticket.png);
+}
+
+#settings-button {
+ background-image: url(../images/settings.png);
+}

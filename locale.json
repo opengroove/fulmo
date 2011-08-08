@@ -1,0 +1,254 @@
+{
+  "master_locale": "ja",
+  "locales": ["ja", "en"],
+  "firefox": {
+    "dir": "firefox/chrome/locale",
+    "dtd": "screenshot_sender.dtd",
+    "properties": "screenshot_sender.properties"
+  },
+  "google_chrome": {
+    "dir": "chrome/_locales",
+    "json": "messages.json"
+  },
+  "messages": {
+    "fulmo_name": {
+      "ja": "fulmo",
+      "en": "fulmo"
+    },
+    "fulmo_description": {
+      "ja": "スクリーンショット付きでチケット作成",
+      "en": "Allow to capture screenshot and create a ticket with the screnshot."
+    },
+    "fulmo_menu_title": {
+      "ja": "fulmo",
+      "en": "fulmo"
+    },
+    "fulmo_general_no_site_warn": {
+      "ja": "登録サイトがありません。設定画面で最初にサイトを登録して下さい。\n今すぐ設定画面を開きますか?",
+      "en": "You have no site to create ticket/issue. Please add the site.\nAre you sure you want to visit the fulmo settings?"
+    },
+    "fulmo_general_button_ok": {
+      "ja": "OK",
+      "en": "Ok"
+    },
+    "fulmo_general_button_cancel": {
+      "ja": "キャンセル",
+      "en": "Cancel"
+    },
+    "screenshot_general_message_please_select": {
+      "ja": "選択して下さい",
+      "en": "Select a site"
+    },
+
+    "fulmo_action_all_send": {
+      "ja": "ページ全体を登録",
+      "en": "Post entire page"
+    },
+    "fulmo_action_view_send": {
+      "ja": "ウィンドウ内を登録",
+      "en": "Post visible position"
+    },
+    "fulmo_action_parts_send": {
+      "ja": "選択範囲を登録",
+      "en": "Post selection"
+    },
+    "fulmo_action_no_image_send": {
+      "ja": "画像なしで登録",
+      "en": "Post without screenshot"
+    },
+    "fulmo_action_setting": {
+      "ja": "設定",
+      "en": "Settings"
+    },
+
+    "fulmo_setting_title": {
+      "ja": "fulmo の設定",
+      "en": "Fulmo Settings"
+    },
+    "fulmo_setting_tab_general": {
+      "ja": "設定", "en": "Settings"
+    },
+    "fulmo_setting_tab_site": {
+      "ja": "サイト", "en": "Site"
+    },
+    "fulmo_setting_label_name": {
+      "ja": "名前:", "en": "Name:"
+    },
+    "fulmo_setting_label_url": {
+      "ja": "URL:", "en": "URL:"
+    },
+    "fulmo_setting_label_site_type": {
+      "ja": "サイト種別:", "en": "Site type:"
+    },
+    "fulmo_setting_label_auth_type": {
+      "ja": "認証方法:", "en": "Auth type:"
+    },
+    "fulmo_setting_option_auth_type_no_auth": {
+      "ja": "なし", "en": "(None)"
+    },
+    "fulmo_setting_option_auth_type_http": {
+      "ja": "HTTP認証", "en": "HTTP auth"
+    },
+    "fulmo_setting_label_user_id": {
+      "ja": "ユーザーID:", "en": "User id:"
+    },
+    "fulmo_setting_label_password": {
+      "ja": "パスワード:", "en": "Password:"
+    },
+    "fulmo_setting_button_connect_test": {
+      "ja": "接続テスト", "en": "Connection test"
+    },
+    "fulmo_setting_message_testing_now": {
+      "ja": "接続テストを実行しています...",
+      "en": "Try to connect..."
+    },
+    "fulmo_setting_button_new_account": {
+      "ja": "新規サイト", "en": "New site"
+    },
+    "fulmo_setting_button_copy_account": {
+      "ja": "コピー", "en": "Copy"
+    },
+    "fulmo_setting_button_delete_account": {
+      "ja": "削除", "en": "Remove"
+    },
+    "fulmo_setting_button_set_default_account": {
+      "ja": "既定のサイト", "en": "Default site"
+    },
+    "fulmo_setting_h2_account": {
+      "ja": "サイトの設定", "en": "Site settings"
+    },
+    "fulmo_setting_h2_tool_button": {
+      "ja": "ツールボタンクリック時の動作",
+      "en": "Toolbar icon action"
+    },
+    "fulmo_setting_h2_contenxt_menu": {
+      "ja": "右クリックメニューの設定",
+      "en": "Right-click menu"
+    },
+    "fulmo_setting_message_context_menu_help": {
+      "ja": "右クリックメニューに追加する項目を選択します。CTRL や SHIFT キーで選択を行うことで複数の項目を追加することができます。",
+      "en": "Select the items that you want to add to right-click menu. It can be selected multiple items with SHIFT and/or CTRL key."
+    },
+    "fulmo_setting_message_account_name_ind": {
+      "ja": "名前を指定して下さい",
+      "en": "Enter site's name"
+    },
+    "fulmo_setting_message_url_ind": {
+      "ja": "URLを指定して下さい",
+      "en": "Enter site's URL"
+    },
+    "fulmo_setting_value_default_account_name": {
+      "ja": "新規サイト", "en": "New site"
+    },
+    "fulmo_value_copied_account_name": {
+      "ja": "コピー ～ ${name}",
+      "en": "Copy - ${name}"
+    },
+    "fulmo_setting_message_url_warn": {
+      "ja": "URLの書式が正しくありません。アクセス可能なURLかどうかを確認して下さい。",
+      "en": "Invalid URL. Please check the URL is accessible."
+    },
+    "fulmo_setting_message_confirm_delete": {
+      "ja": "サイト「%S」を削除しますか?",
+      "en": "Are you sure you want to remove '%S' site?"
+    },
+
+    "fulmo_test_title": {
+      "ja": "接続テスト",
+      "en": "Connection test"
+    },
+    "fulmo_test_message_description_1": {
+      "ja": "サーバーと通信し、接続テストを行います。",
+      "en": "Try to connect using the settings."
+    },
+    "fulmo_test_message_description_2": {
+      "ja": "認証情報を設定していない場合は、以下のフィールドで指定して下さい。",
+      "en": "Enter the following fields if you need to authenticate the site."
+    },
+    "fulmo_test_message_succeeded": {
+      "ja": "接続テストに成功しました。\n\nURL: %S\nXML RPC Version: %S.%S.%S",
+      "en": "Successfully connected to the site.\n\nURL: %S\nXML RPC Version: %S.%S.%S"
+    },
+    "fulmo_test_message_failed": {
+      "ja": "接続テストに失敗しました。\n\nURL: %S\n\nエラーの詳細は以下の通りです。\n%S",
+      "en": "Cannot connect to the site.\n\nURL: %S\n\nError details:\n%S"
+    },
+
+    "fulmo_login_title": {
+      "ja": "認証情報の入力",
+      "en": "Require authentication"
+    },
+    "fulmo_login_message_desctiption": {
+      "ja": "以下のサイトにログインします",
+      "en": "Login to the following site"
+    },
+    "fulmo_login_label_user_id": {
+      "ja": "ユーザーID:", "en": "User id:"
+    },
+    "fulmo_login_label_account_name": {
+      "ja": "サイト:", "en": "Site:"
+    },
+    "fulmo_login_label_password": {
+      "ja": "パスワード:", "en": "Password"
+    },
+    "fulmo_login_message_failed_1": {
+      "ja": "ログインできません。エラーの詳細は以下の通りです。",
+      "en": "Cannot login. Error details:"
+    },
+    "fulmo_login_message_failed_2": {
+      "ja": "ウィンドウ上部のリストから認証可能なサイトを選択し、やりなおして下さい。",
+      "en": "Select a site which you want to create a ticket in the top of this page."
+    },
+
+    "fulmo_main_title": {
+      "ja": "チケットの新規作成",
+      "en": "Create ticket"
+    },
+    "fulmo_main_h1": {
+      "ja": "fulmo", "en": "fulmo"
+    },
+    "fulmo_main_message_create_ticket_failed": {
+      "ja": "チケットの作成に失敗しました。エラーの詳細は以下の通りです。",
+      "en": "Cannot create a ticket. Error details:"
+    },
+    "fulmo_main_message_sumarry_ind": {
+      "ja": "概要を入力して下さい。",
+      "en": "Require summary"
+    },
+    "fulmo_main_message_reporter_ind": {
+      "ja": "報告者を入力して下さい。",
+      "en": "Require reporter"
+    },
+    "fulmo_main_message_create_ticket_but_could_not_put_img": {
+      "ja": "チケットの作成には成功しましたが、画像の添付に失敗しました。\nエラーの詳細は以下の通りです。",
+      "en": "The ticket has been created, but an error occurred while attaching the image.\nError details:"
+    },
+    "fulmo_main_anchor_attachment": {
+      "ja": "添付ファイル",
+      "en": "Attachment"
+    },
+    "fulmo_main_h2_create_ticket": {
+      "ja": "チケットの新規作成",
+      "en": "Create ticket"
+    },
+    "fulmo_main_label_summary": {
+      "ja": "概要……", "en": "Summary"
+    },
+    "fulmo_main_label_reporter": {
+      "ja": "報告者……", "en": "Reporter"
+    },
+    "fulmo_main_label_description": {
+      "ja": "詳細……", "en": "Description"
+    },
+    "fulmo_main_h2_attribute": {
+      "ja": "属性▼", "en": "Properties"
+    },
+    "fulmo_main_button_title_send_ticket": {
+      "ja": "チケットの新規作成", "en": "Create ticket"
+    },
+    "fulmo_main_label_view_ticket": {
+      "ja": "このチケットを表示します",
+      "en": "Show the ticket after creating"
+    }
+  }
+}

@@ -1,0 +1,109 @@
+* {
+ font-family: "Arial", "san-serif", "メイリオ", "ＭＳ Ｐゴシック","Osaka","verdana","palatino";
+}
+
+body {
+ font-size: 12px;
+ background: #eeeeee;
+}
+
+h1 {
+ background: url(../images/icon32.png) no-repeat;
+ padding: 0 0 0 40px;
+ line-height: 32px;
+ min-height: 32px;
+ color: #003399;
+ margin: 0;
+}
+
+#page-buttons {
+ margin: 4px 0 0 0 ;
+}
+
+#screenshot-sender-account-list {
+ width: 14em;
+}
+
+#screenshot-sender-account-list {
+ width: 200px;
+ font-size: 12px;
+ line-height: 32px;
+ float: left;
+}
+
+#screenshot-sender-account-list option {
+}
+
+#screenshot-sender-account-editor-wrap {
+ margin-left: 212px;
+ width: 430px;
+}
+
+label span {
+ display: inline-block;
+ width: 100px;
+}
+
+#screenshot-sender-account-test-button {
+ width: 430px;
+}
+
+button img {
+ vertical-align: -3px;
+ padding-right: 3px;
+}
+
+#screenshot-sender-account-button-bar {
+ margin: 0 0 8px 0;
+}
+
+#screenshot-sender-account-test-progressbar-wrapper {
+ position: relative;
+ display: none;
+}
+
+#screenshot-sender-account-test-progressbar {
+ width: 320px;
+}
+
+#screenshot-sender-account-test-progressbar-message {
+ position: absolute;
+ top: 0px;
+ left: 0;
+ width: 320px;
+ text-align: center;
+ padding-top: 6px;
+}
+
+fieldset {
+ margin: 0 0 4px 0;
+}
+
+h2 {
+ font-size: 16px;
+ border-bottom: dashed 2px #cccccc;
+ color: #003399;
+ margin-top: 32px;
+}
+
+#tabs {
+ width: 700px;
+ border: 4px #cccccc solid;
+ margin: 8px auto 8px auto;
+ padding: 16px;
+ border-radius: 16px;
+ background: #ffffff;
+}
+
+.tab-page-contents {
+ padding-left: 48px;
+}
+
+address {
+ font-style: normal;
+ text-align: center;
+}
+
+#screenshot-sender-account-name, #screenshot-sender-account-url {
+ width: 300px;
+}
