@@ -1,6 +1,6 @@
 {
   "name": "__MSG_fulmo_name__",
-  "version": "0.2",
+  "version": "1.0.1",
   "description": "__MSG_fulmo_description__",
   "options_page": "settings.html",
   "background_page": "background.html",
@@ -25,6 +25,7 @@
   "permissions": [
     "tabs",
     "contextMenus",
+    "cookies",
     "http://*/*", 
     "https://*/*"
   ]

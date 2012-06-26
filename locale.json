@@ -16,8 +16,8 @@
       "en": "fulmo"
     },
     "fulmo_description": {
-      "ja": "スクリーンショット付きでチケット作成",
-      "en": "Allow to capture screenshot and create a ticket with the screnshot."
+      "ja": "スクリーンショット付きで簡単チケット作成。スクリーンショットの編集もできる。",
+      "en": "Easy ticket creation with an annotated screenshot."
     },
     "fulmo_menu_title": {
       "ja": "fulmo",
@@ -169,6 +169,10 @@
       "ja": "接続テストに成功しました。\n\nURL: %S\nXML RPC Version: %S.%S.%S",
       "en": "Successfully connected to the site.\n\nURL: %S\nXML RPC Version: %S.%S.%S"
     },
+    "fulmo_test_message_succeeded_no_version": {
+      "ja": "接続テストに成功しました。\n\nURL: %S",
+      "en": "Successfully connected to the site.\n\nURL: %S"
+    },
     "fulmo_test_message_failed": {
       "ja": "接続テストに失敗しました。\n\nURL: %S\n\nエラーの詳細は以下の通りです。\n%S",
       "en": "Cannot connect to the site.\n\nURL: %S\n\nError details:\n%S"
@@ -227,6 +231,14 @@
       "ja": "添付ファイル",
       "en": "Attachment"
     },
+    "fulmo_main_anchor_attachment_save": {
+      "ja": "保存",
+      "en": "Save"
+    },
+    "fulmo_main_anchor_attachment_edit": {
+      "ja": "編集",
+      "en": "Edit"
+    },
     "fulmo_main_h2_create_ticket": {
       "ja": "チケットの新規作成",
       "en": "Create ticket"
@@ -249,6 +261,91 @@
     "fulmo_main_label_view_ticket": {
       "ja": "このチケットを表示します",
       "en": "Show the ticket after creating"
+    },
+    
+    "fulmo_editor_title": {
+      "ja": "スクリーンショットの編集",
+      "en": "Edit screenshot"
+    },
+    "fulmo_editor_btn_save": {
+      "ja": "保存",
+      "en": "Save"
+    },
+    "fulmo_editor_btn_send": {
+      "ja": "チケット登録",
+      "en": "New Ticket"
+    },
+    "fulmo_editor_btn_drag": {
+      "ja": "ドラッグ&ドロップ",
+      "en": "Drag&Drop"
+    },
+    "fulmo_editor_btn_library": {
+      "ja": "ライブラリ",
+      "en": "Library"
+    },
+    "fulmo_editor_text_small": { "ja": "小", "en": "Small" },
+    "fulmo_editor_text_middle": { "ja": "標準", "en": "Middle" },
+    "fulmo_editor_text_large": { "ja": "大", "en": "Large" },
+    "fulmo_editor_text_xlarge": { "ja": "特大", "en": "Very large" },
+    "fulmo_save_image_as": {
+      "ja": "画像を保存",
+      "en": "Save image as..."
+    },
+    "fulmo_not_enough_width": {
+      "ja": "ウィンドウが狭すぎるので、ウィンドウ全体のスクリーンショットを撮ることができません。もう少しウィンドウを広げてから実行して下さい。",
+      "en": "Cannot take a screenshot of the entire window because it's too small. Please expand the window size."
+    },
+    "fulmo_redmine_test_message_url_invalid": {
+      "ja": "URLが正しくありません。プロジェクトの概要ページのURLを指定して下さい。\n例: http://example.com/redmine/projects/foo_proj",
+      "en": "Invalid URL. Please set Please set URL of summary page.\nExample: http://example.com/redmine/projects/foo_proj"
+    },
+    "fulmo_redmine_label_project": {
+      "ja": "プロジェクト",
+      "en": "Project"
+    },
+    "fulmo_redmine_label_tracker": {
+      "ja": "トラッカー",
+      "en": "Tracker"
+    },
+    "fulmo_redmine_label_status": {
+      "ja": "ステータス",
+      "en": "Status"
+    },
+    "fulmo_redmine_label_priority": {
+      "ja": "優先度",
+      "en": "Priority"
+    },
+    "fulmo_redmine_label_assigned_to": {
+      "ja": "担当者",
+      "en": "Assignd to"
+    },
+    "fulmo_redmine_label_category": {
+      "ja": "カテゴリ",
+      "en": "Category"
+    },
+    "fulmo_redmine_label_fixed_version": {
+      "ja": "対象バージョン",
+      "en": "Fixed version"
+    },
+    "fulmo_redmine_label_parent_issue": {
+      "ja": "親チケット",
+      "en": "Parent issue"
+    },
+    "fulmo_redmine_label_start_date": {
+      "ja": "開始日",
+      "en": "Start date"
+    },
+    "fulmo_redmine_label_due_date": {
+      "ja": "期日",
+      "en": "Due date"
+    },
+    "fulmo_redmine_label_estimated_hours": {
+      "ja": "予定工数",
+      "en": "Estimated hours"
+    },
+    "fulmo_redmine_label_done_ratio": {
+      "ja": "進捗 %",
+      "en": "Done ratio"
     }
   }
 }

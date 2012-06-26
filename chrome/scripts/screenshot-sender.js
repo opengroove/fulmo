@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011, OpenGroove, Inc. All rights reserved.
+ * Copyright (C) 2012, OpenGroove, Inc. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -102,7 +102,8 @@ var ScreenshotSender = function(W, CII) {
         var width = rect[2];
         var height = rect[3];
         CII.createScreenCapture(rect, function(url) {
-            setupMainWindow([url, width, height]);
+//            setupMainWindow([url, width, height]);
+            setupEditor([url, width, height]);
         });
     }
 
@@ -233,9 +234,18 @@ var ScreenshotSender = function(W, CII) {
         return imageParams;
     };
 
+    this.setImageParams = function(params) {
+        imageParams = params;
+    }
+
     function setupMainWindow(params) {
         imageParams = params;
         CII.openMainWindow(params);
+    }
+
+    function setupEditor(params) {
+        imageParams = params;
+        CII.openEditor(params);
     }
 
     this.setupContextMenu = function(params) {

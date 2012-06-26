@@ -47,7 +47,7 @@ class CreateLocaleFiles
                     message = '???'
                 end
             end
-            fp.puts sprintf("<!ENTITY %s \"%s\">\n", key, message.gsub(/\n/, '\n').gsub(/\t/, '\t').gsub(/\"/, '\"').gsub(/%/, '&#37;'))
+            fp.puts sprintf("<!ENTITY %s \"%s\">\n", key, message.gsub(/\n/, '\n').gsub(/\t/, '\t').gsub(/\"/, '\"').gsub(/%/, '&#37;').gsub('&', '&amp;').gsub('<', '&lt;').gsub('>', '&gt;').gsub('"', '&quot;'))
         }
     end
 

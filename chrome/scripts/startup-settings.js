@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011, OpenGroove, Inc. All rights reserved.
+ * Copyright (C) 2012, OpenGroove, Inc. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -47,10 +47,24 @@ var settingInterfaceImplementation = {
         return sel[0];
     },
     getString: function(tag) {
-        return chrome.i18n.getMessage(tag);
+        try {
+            return chrome.i18n.getMessage(tag);
+        }
+        catch (e) {
+            if (window.console && console.log)
+                console.log([e, tag]);
+            return tag;
+        }
     },
     getFormattedString: function(tag, prm) {
-        return $.formatString(chrome.i18n.getMessage(tag), prm);
+        try {
+            return $.formatString(chrome.i18n.getMessage(tag), prm);
+        }
+        catch (e) {
+            if (window.console && console.log)
+                console.log([e, tag, prm]);
+            return tag;
+        }
     },
     setDefaultIcon: function(settings) {
         var defaultId = settings.defaultAccountId;
@@ -126,6 +140,12 @@ var settingInterfaceImplementation = {
     },
     setupContextMenu: function(params) {
         chrome.extension.sendRequest({command: "setupContextMenu", params: params}, function(response) {});
+    },
+    setupBtsMenu: function() {
+        for (var btsId in fulmo_bts_drivers) {
+            var opt = $('<option>').val(btsId).text(fulmo_bts_drivers[btsId].label);
+            $('#screenshot-sender-account-site-type').append(opt);
+        }
     }
 };
 

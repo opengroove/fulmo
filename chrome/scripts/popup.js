@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011, OpenGroove, Inc. All rights reserved.
+ * Copyright (C) 2012, OpenGroove, Inc. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -55,11 +55,8 @@ window.addEventListener('load', function(ev){
         ev.preventDefault();
     }, false);
     document.getElementById('send-without-image-button').addEventListener('click', function(ev) {
-        chrome.tabs.getSelected(null, function(tab) {
-            window.close();
-            chrome.tabs.sendRequest(tab.id, {command: "withoutImage"}, function(response) {
-            });
-        });
+        window.close();
+        chrome.extension.sendRequest({command: "openMainWindow"}, function(response) {});
         ev.preventDefault();
     }, false);
     document.getElementById('settings-button').addEventListener('click', function(ev) {

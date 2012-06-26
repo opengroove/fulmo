@@ -1,8 +1,9 @@
 #! /bin/sh
 set -e
-dir="${0/*}"
+dir="${0%/*}"
 [ -z "$dir" ] && dir="$PWD"
+output="$dir/release/fulmo-firefox.xpi"
 cd "$dir/firefox"
-output=../fulmo-firefox.xpi
 rm -f -- "$output" || :
-zip -r "$output" $(find -L . -type f \! -path '*/.svn/*')
+zip -qr -9 -X "$output" $(find -L . -type f \! -path '*/.svn/*')
+echo "Created $output" >&2

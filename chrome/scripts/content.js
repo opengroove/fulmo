@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011, OpenGroove, Inc. All rights reserved.
+ * Copyright (C) 2012, OpenGroove, Inc. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -55,8 +55,8 @@ var contentInterfaceImplementation = {
         chrome.extension.sendRequest({command: 'setCanvasSize', width: rect[2], height: rect[3]}, function(res) {
             if (rect[0] == 0 && rect[1] == 0 && rect[2] == docSize[0] && rect[3] == docSize[1]) {
                 function onScroll(ev) {
-                    　setTimeout(function() {
-                        window.removeEventListener('scroll', onScroll, false);
+                      window.removeEventListener('scroll', onScroll, false);
+                      setTimeout(function() {
                         var pos = getScrollPos();
                         x = pos[0];
                         y = pos[1];
@@ -68,13 +68,17 @@ var contentInterfaceImplementation = {
                 function captureSplit(x, y) {
                     if (x + winSize[0] < docSize[0]) {
                         x += winSize[0] - margin;
-                        window.scroll(x, y);
                         window.addEventListener('scroll', onScroll, false);
+                        setTimeout(function() {
+                            window.scroll(x, y);
+                        }, 10);
                     } else if (y + winSize[1] < docSize[1]) {
                         x = 0;
                         y += winSize[1] - margin;
-                        window.scroll(x, y);
                         window.addEventListener('scroll', onScroll, false);
+                        setTimeout(function() {
+                            window.scroll(x, y);
+                        }, 10);
                     } else {
                         chrome.extension.sendRequest({command: 'getCanvas'}, function(res) {
                             window.scroll(currentPos[0], currentPos[1]);
@@ -87,8 +91,10 @@ var contentInterfaceImplementation = {
                 if (currentPos[0] == 0 && currentPos[1] == 0) {
                     onScroll(null);
                 } else {
-                    window.scroll(0, 0);
                     window.addEventListener('scroll', onScroll, false);
+                    setTimeout(function() {
+                        window.scroll(0, 0);
+                    }, 10);
                 }
             } else if (rect[0] == 0 && rect[1] == 0 && rect[2] == winSize[0] && rect[3] == winSize[1]) {
                 chrome.extension.sendRequest({command: 'putDocumentPart', pos: [0, 0, winSize[0], winSize[1]], margin: 0}, function(res) {
@@ -111,13 +117,24 @@ var contentInterfaceImplementation = {
         chrome.extension.sendRequest({command: 'openMainWindow', params: params}, function(res) {
         });
     },
+    openEditor: function(params) {
+        chrome.extension.sendRequest({command: 'openEditor', params: params}, function(res) {
+        });
+    },
     loadSettings: function(func) {
         chrome.extension.sendRequest({command: 'loadSetting'}, function(res) {
             func(JSON.parse(res.data));
         });
     },
     getString: function(tag) {
-        return chrome.i18n.getMessage(tag);
+        try {
+            return chrome.i18n.getMessage(tag);
+        }
+        catch (e) {
+            if (window.console && console.log)
+                console.log([e, tag]);
+            return tag;
+        }
     },
     openSettingWindow: function() {
         chrome.extension.sendRequest({command: "openSettingWindow"}, function(response) {});
@@ -134,7 +151,12 @@ chrome.extension.onRequest.addListener(
             sendResponse({result: 'through'});
             return;
         } else if (request.command == 'documentCapture') {
-            screenshotSender.goSend(0);
+            var sz = getScreenSize();
+            if (sz[0] < 320 || sz[1] < 100) {
+                alert(contentInterfaceImplementation.getString('fulmo_not_enough_width'));
+            } else {
+                screenshotSender.goSend(0);
+            }
             sendResponse({result: 'ok'});
         } else if (request.command == 'windowCapture') {
             screenshotSender.goSend(10);

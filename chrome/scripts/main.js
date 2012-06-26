@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011, OpenGroove, Inc. All rights reserved.
+ * Copyright (C) 2012, OpenGroove, Inc. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -31,14 +31,16 @@ var screenshotSenderMain = function(MII) {
     var settings = fulmoSettingsManager.load();
     var account = null;
     var urlRegex = new RegExp(/^(https?):\/\/([^:\/]*)((:([0-9]+))?)(\/.*)/);
-    var client = null;
-    var idPrefix = 'screenshot-sender-property-';
+    var loginProperties = null;
+    var currentDriver = null;
+    var idPrefix = 'screenshot-sender-property-value-';
     var imageParams = MII.getImageParams();
     var inFieldLabelsOptions = {
         fadeOpacity: 0.0,
         fadeDuration: 0
     };
     var animationSetuped = false;
+    var _dirty = parseHash('dirty', true) ? true : false;
 
     $('.i18n').each(function() {
         $(this).text(MII.getString($(this).text()));
@@ -51,39 +53,94 @@ var screenshotSenderMain = function(MII) {
 
     $('#screenshot-sender-application-image').attr('src', MII.imagePath() + 'icon32.png');
     $('#screenshot-sender-property-loading img').attr('src', MII.imagePath() + 'ajax-loader.gif');
-    $('#screenshot-sender-main-image-filed p span').css('background-image', 'url(' + MII.imagePath() + 'camera_16.gif)');
+    $('#screenshot-sender-image-field p span').css('background-image', 'url(' + MII.imagePath() + 'camera_16.gif)');
     $('#screenshot-sender-property-loading').css('display', 'none');
     imageResize();
-    $('#screenshot-sender-main-submit').click(sendTicket);
+    $('#screenshot-sender-submit').click(sendTicket);
+    $('#screenshot-sender-image-field-save').click(function(){
+        var message = MII.getString('fulmo_save_image_as');
+        MII.showImageDialog(message, generateFilename(), function(fn){fn(imageParams[0])});
+        return false;
+    });
+    $('#screenshot-sender-image-field-edit').click(function(){
+        var tmp = _dirty;
+        _dirty = false;
+        MII.openEditorTab(imageParams, tmp);
+    });
+    var beforeunload = false;
+    $(window).bind('beforeunload', function(ev) {
+        if (_dirty && beforeunload === false) {
+            beforeunload = true;
+            setTimeout(function() { beforeunload = false }, 100);
+            return ' ';
+        }
+    });
+
     setSiteList();
+
+    function parseHash(key, isInt) {
+        var str = location.hash;
+        if (str == '' || str == '#') return null;
+        var params = str.substr(1).split('&');
+        for (var i = 0; i < params.length; i++) {
+            var tmp = params[i].split('=');
+            if (tmp[0] == key) {
+                if (tmp.length < 2) return null;
+                if (isInt) return parseInt(tmp[1]);
+                return tmp[1];
+            }
+        }
+        return null;
+    }
+
+    function generateFilename() {
+        function pad0(val, n) {
+            var pad;
+            switch (n) {
+                case 2: pad = '00';   break;
+                case 4: pad = '0000'; break;
+            }
+            return (pad + val).slice(-n);
+        }
+        var now = new Date();
+        now = {year: now.getFullYear(), month: now.getMonth() + 1,
+               date: now.getDate(), hours: now.getHours(),
+               minutes: now.getMinutes(), seconds: now.getSeconds()};
+        return [
+            'image-',
+            pad0(now.year, 4), pad0(now.month, 2), pad0(now.date, 2),
+            '-',
+            pad0(now.hours, 2), pad0(now.minutes, 2), pad0(now.seconds, 2),
+            '.png'].join('');
+    }
 
     function setImageAreaAnimation() {
         if (animationSetuped) return;
         animationSetuped = true;
         setTimeout(function() {
-            $('#screenshot-sender-main-image-filed').animate({
+            $('#screenshot-sender-image-field').animate({
                 height: '16px'
             }, 500, 'easeInCubic', function(){
-                $('#screenshot-sender-main-image-filed').click(function() {
+                $('#screenshot-sender-image-field').click(function() {
                     var currentHeight = $(this).css('height');
                     if (currentHeight == '16px') {
-                        $('#screenshot-sender-main-image-filed').animate({height: '136px'}, 500, 'easeOutCubic');
+                        $('#screenshot-sender-image-field').animate({height: '136px'}, 500, 'easeOutCubic');
                     } else if (currentHeight == '136px') {
-                        $('#screenshot-sender-main-image-filed').animate({height: '16px'}, 500, 'easeInCubic');
+                        $('#screenshot-sender-image-field').animate({height: '16px'}, 500, 'easeInCubic');
                     }
                 });
             });
         }, 2000);
     }
 
-    $('.screenshot-sender-main-item-label').inFieldLabels(inFieldLabelsOptions);
+    $('.screenshot-sender-item-label').inFieldLabels(inFieldLabelsOptions);
 
     function imageResize() {
         if (!imageParams) {
-            $('#screenshot-sender-main-image-filed').css('display', 'none');
+            $('#screenshot-sender-image-field').css('display', 'none');
             return;
         }
-        $('#screenshot-sender-main-image').attr('src', imageParams[0]);
+        $('#screenshot-sender-image').attr('src', imageParams[0]);
         var wMax = 200;
         var hMax = 100;
         var w = imageParams[1];
@@ -95,12 +152,50 @@ var screenshotSenderMain = function(MII) {
         var rate = wRate < hRate ? wRate : hRate;
         w *= rate;
         h *= rate;
-        $('#screenshot-sender-main-image').attr('width', w);
-        $('#screenshot-sender-main-image').attr('height', h);
+        $('#screenshot-sender-image').attr('width', w);
+        $('#screenshot-sender-image').attr('height', h);
     }
 
+    function setupSiteListIcon() {
+        setTimeout(function() {
+            $('#screenshot-sender-site+button span+span img').remove();
+            var vals = $('#screenshot-sender-site').multiselect('getChecked').map(function(){ return this.value;}).get();
+            var idx = -1;
+            for (var i = 0; i < settings.accounts.length; i++) {
+                if (settings.accounts[i].id == vals[0]) {
+                    idx = i;
+                    break;
+                }
+            }
+            if (idx != -1) {
+                var img = $('<img>');
+                img.attr('src', MII.imagePath() + 'bts/' + fulmo_bts_drivers[settings.accounts[idx].siteType].icon);
+                img.attr('width', 16);
+                img.attr('height', 16);
+                img.css('vertical-align', '-2px');
+                img.css('padding-right', '2px');
+                $('#screenshot-sender-site+button span+span').prepend(img);
+            }
+
+            for (i = 0; i < settings.accounts.length; i++) {
+                var label_id = '#ui-multiselect-screenshot-sender-site-option-' + (i + 1);
+                $(label_id + '+span img').remove();
+                var img = $('<img>');
+                img.attr('src', MII.imagePath() + 'bts/' + fulmo_bts_drivers[settings.accounts[i].siteType].icon);
+                img.attr('width', 16);
+                img.attr('height', 16);
+                img.css('vertical-align', '-2px');
+                img.css('padding-right', '2px');
+                $(label_id + '+span').prepend(img);
+            }
+
+        }, 20); // multi-select のタイムアウトが10ミリ秒後に起動するため20ミリ秒後に動作するようにした
+    }
+
+
     function setSiteList() {
-        var list = $('#screenshot-sender-main-site');
+
+        var list = $('#screenshot-sender-site');
         for (var i = 0; i < settings.accounts.length; i++) {
             var opt = $('<option>');
             opt.text(settings.accounts[i].name);
@@ -110,31 +205,36 @@ var screenshotSenderMain = function(MII) {
                 list.val(settings.accounts[i].id);
             }
         }
-        $('#screenshot-sender-main-site').multiselect({
+        $('#screenshot-sender-site').multiselect({
             multiple: false,
             selectedList: 1,
-            minWidth: 180,
+            minWidth: 380,
             header: false,
             click: function(e, ui) {
-                setSite(ui.value);
+                setSite(ui.value, false);
+            },
+            close: function(e, ui) {
+                setupSiteListIcon();
             }
         });
-        setSite(settings.defaultAccountId ? settings.defaultAccountId : settings.accounts[0].id);
+        setupSiteListIcon();
+        setSite(settings.defaultAccountId ? settings.defaultAccountId : settings.accounts[0].id, false);
     }
 
-    function setSite(id) {
+    function setSite(id, resetup) {
         function resetList() {
-            var list = document.getElementById('screenshot-sender-main-site');
+            var list = document.getElementById('screenshot-sender-site');
             list.selectedIndex = 0;
-            $('#screenshot-sender-main-site').multiselect('refresh');
-            $('#screenshot-sender-main-submit').attr('disabled', true);
+            $('#screenshot-sender-site').multiselect('refresh');
+            $('#screenshot-sender-submit').attr('disabled', true);
             $('#screenshot-sender-property-reporter-wrapper').html(reporterOrgHtml);
             $('#screenshot-sender-property-reporter-lv').inFieldLabels(inFieldLabelsOptions);
             $('#screenshot-sender-property-reporter-wrapper').css('display','block');
+            setupSiteListIcon();
         }
 
         if (!parseInt(id)) {
-            $('#screenshot-sender-main-submit').attr('disabled', true);
+            $('#screenshot-sender-submit').attr('disabled', true);
             return;
         }
         var idx = 0;
@@ -145,228 +245,55 @@ var screenshotSenderMain = function(MII) {
             }
         }
         account = JSON.parse(JSON.stringify(settings.accounts[idx]));
+        if (account.url.match(urlRegex)) {
+            account.protocol = RegExp.$1;
+            account.host = RegExp.$2;
+            account.port = 0 + RegExp.$5;
+            if (!account.port) account.port = account.protocol == 'http' ? 80 : 443;
+            account.path = RegExp.$6;
+        }
 
         MII.login(account, 
             function() {
-                if (account.url.match(urlRegex)) {
-                    var protocol = RegExp.$1;
-                    var host = RegExp.$2;
-                    var port = 0 + RegExp.$5;
-                    if (!port) port = protocol == 'http' ? 80 : 443;
-                    var path = RegExp.$6;
-                }
-                if (path.charAt(path.length - 1) != '/') {
-                    path += '/';
-                }
-                if (!account.authType) { // no password
-                    path += 'rpc';
-                } else {
-                    path += 'login/rpc';
-                }
-                xmlHttpRequestCredential.cleanup();
-                client = new xmlrpc_client(path, host, port, protocol);
-                if (parseInt(account.authType)) client.setCredentials(account.userId, account.password, 0);
                 $('#screenshot-sender-property-loading').css('display', 'block');
-                $('#screenshot-sender-main-submit').attr('disabled', true);
-                $('#property-block').html('');
-                XMLHttpRequest = FulmoXMLHttpRequest;
-                client.send(new xmlrpcmsg('ticket.getTicketFields'), 30, function(res){
-                    $('#screenshot-sender-main-submit').attr('disabled', false);
-                    $('#screenshot-sender-property-loading').css('display', 'none');
-                    if (res.faultCode()) {
-                        alert(MII.getString('fulmo_login_message_failed_1') + "\n\n" + res.faultString() + "\n\n" + MII.getString('fulmo_login_message_failed_2'));
+                $('#screenshot-sender-submit').attr('disabled', true);
+                $('#screenshot-sender-property-list').css('display', 'none');
+                currentDriver = fulmo_bts_drivers[account.siteType];
+                currentDriver.loginAndGetFields(idPrefix, {
+                    account: account,
+                    error: function(message) {
+                        $('#screenshot-sender-submit').attr('disabled', false);
+                        $('#screenshot-sender-property-loading').css('display', 'none');
+                        $('#screenshot-sender-property-list').css('display', 'block');
+                        alert(MII.getString('fulmo_login_message_failed_1') + "\n\n" + message + "\n\n" + MII.getString('fulmo_login_message_failed_2'));
                         resetList();
                         setImageAreaAnimation();
-                        return;
-                    }
-                    $('#screenshot-sender-property-reporter-wrapper').html(reporterOrgHtml);
-                    if (account.userId.trim().length) {
-                        $('#screenshot-sender-property-reporter').val(account.userId);
-                        $('#screenshot-sender-property-reporter-wrapper').css('display','none');
-                    } else {
-                        $('#screenshot-sender-property-reporter-wrapper').css('display','block');
-                        $('#screenshot-sender-property-reporter-lv').inFieldLabels(inFieldLabelsOptions);
-                    }
-                    createProperty(res.val.me);
-                    setImageAreaAnimation();
-                });
-                XMLHttpRequest = FulmoXMLHttpRequestBackup;
+                    },
+                    success: function(props) {
+                        loginProperties = props;
+                        $('#screenshot-sender-submit').attr('disabled', false);
+                        $('#screenshot-sender-property-loading').css('display', 'none');
+                        $('#screenshot-sender-property-list').css('display', 'block');
+                        $('#screenshot-sender-property-reporter-wrapper').html(reporterOrgHtml);
+                        if (account.userId.trim().length) {
+                            $('#screenshot-sender-property-reporter').val(account.userId);
+                            $('#screenshot-sender-property-reporter-wrapper').css('display','none');
+                        } else {
+                            $('#screenshot-sender-property-reporter-wrapper').css('display','block');
+                            $('#screenshot-sender-property-reporter-lv').inFieldLabels(inFieldLabelsOptions);
+                        }
+                        currentDriver.createProperty(idPrefix, props);
+                        setImageAreaAnimation();
+                    },
+                    formatString: MII.getFormattedString,
+                    resetup: function(){ setSite(id, true);},
+                }, resetup);
             },
             function() {
-                $('#property-block').html('');
                 resetList();
                 setImageAreaAnimation();
             }
         );
-    }
-
-    function createProperty(val) {
-        function v(val, name) {
-            return val.me[name] ? val.me[name].me : null;
-        }
-        function createElement(target, val) {
-
-            var createInput = {
-                'text': function(val) {
-                    var inp = $('<input>');
-                    if (val.value) inp.val(val.value.me);
-                    inp.attr('id', idPrefix + name);
-                    inp.addClass('screenshot-sender-property');
-                    var label = $('<label>');
-                    label.addClass('screenshot-sender-properties-label');
-                    label.attr('for', idPrefix + name);
-                    label.text(val.label.me + ': ');
-                    label.append(inp);
-                    var span = $('<span>');
-                    span.append(label);
-                    span.append(inp);
-                    return span;
-                },
-                'select': function(val) {
-                    var sel = $('<select>');
-                    if (val.options) {
-                        for (var i = 0; i < val.options.me.length; i++) {
-                            var opt = $('<option>');
-                            opt.text(val.options.me[i].me);
-                            opt.val(val.options.me[i].me);
-                            sel.append(opt);
-                        }
-                    }
-                    if (val.value) {
-                        sel.val(val.value.me);
-                    }
-                    sel.attr('id', idPrefix + name);
-                    sel.addClass('screenshot-sender-property');
-                    var label = $('<label>');
-                    label.addClass('screenshot-sender-properties-label');
-                    label.attr('for', idPrefix + name);
-                    label.text(val.label.me + ': ');
-                    var span = $('<span>');
-                    span.append(label);
-                    span.append(sel);
-                    return span;
-                },
-                'checkbox': function(val) {
-                    var inp = $('<input>');
-                    if (val.value) inp.val(val.value.me);
-                    inp.attr('id', idPrefix + name);
-                    inp.attr('type', 'checkbox');
-                    inp.addClass('screenshot-sender-property');
-                    var label = $('<label>');
-                    label.addClass('screenshot-sender-properties-label');
-                    label.attr('for', idPrefix + name);
-                    label.text(val.label.me + ': ');
-                    label.append(inp);
-                    var span = $('<span>');
-                    span.append(label);
-                    span.append(inp);
-                    return span;
-                },
-                'radio': function(val) {
-                    if (!val.options) return false;
-                    var span = $('<span>');
-                    var glabel = $('<span>');
-                    glabel.text(val.label.me + ': ');
-                    glabel.addClass('screenshot-sender-properties-label');
-                    span.append(glabel);
-                    var def = val.value ? val.value.me : null;
-                    var wrap = $('<span>');
-                    wrap.addClass('screenshot-sender-property');
-                    wrap.attr('id', idPrefix + name);
-                    for (var i = 0; i < val.options.me.length; i++) {
-                        var label = $('<label>');
-                        label.addClass('screenshot-sender-radio-label');
-                        label.text(val.options.me[i].me);
-                        var inp = $('<input>');
-                        inp.attr('name', idPrefix + name);
-                        inp.attr('id', idPrefix + name + '-' + i);
-                        inp.attr('type', 'radio');
-                        inp.val(val.options.me[i].me);
-                        if (val.options.me[i].me == def) inp.attr('checked', 'checked');
-                        label.prepend(inp);
-                        wrap.append(label);
-                    }
-                    span.append(wrap);
-                    return span;
-                },
-                'textarea': function(val) {
-                    var inp = $('<textarea>');
-                    if (val.value) inp.text(val.value.me);
-                    inp.attr('id', idPrefix + name);
-                    inp.addClass('screenshot-sender-property');
-                    if (val.width) inp.attr('cols', val.width.me);
-                    if (val.height) inp.attr('rows', val.height.me);
-                    var label = $('<label>');
-                    label.addClass('screenshot-sender-properties-label');
-                    label.attr('for', idPrefix + name);
-                    label.text(val.label.me + ': ');
-                    label.append(inp);
-                    var span = $('<span>');
-                    span.append(label);
-                    span.append(inp);
-                    return span;
-                }
-            };
-
-            var name = val.name.me;
-            var type = val.type.me;
-            if (!createInput[type]) type = 'text';
-            var li = $('<li>');
-            var inp = createInput[type](val);
-            if (inp) {
-                li.append(inp);
-                target.append(li);
-            }
-        }
-
-        var ignore = [  'status', 'resolution', 'time', 'changetime', 'sumarry', 'reporter', 'description' ]
-        var topStandardParams = {
-            'type': null,
-            'priority': null,
-            'milestone': null,
-            'component': null,
-            'version': null,
-            'severity': null,
-            'keywords': null,
-            'cc': null
-        };
-        var bottomStandardParams = {
-            'owner': null
-        }
-        var customParams = [];
-        for (var i = 0; i < val.length; i++) {
-            var name = v(val[i], 'name');
-            if (ignore.indexOf(name) != -1) continue;
-            if (topStandardParams[name] === null) {
-                topStandardParams[name] = val[i].me;
-            } else if (bottomStandardParams[name] === null) {
-                bottomStandardParams[name] = val[i].me;
-            } else {
-                var order = '' + v(val[i], 'order');
-                if (!order) order = 0;
-                if (!customParams[order]) customParams[order] = [];
-                customParams[order].push(val[i].me);
-            }
-        }
-        var target = $('#property-block');
-        target.html('');
-        for (var i in topStandardParams) {
-            if (topStandardParams[i] !== null) {
-                createElement(target, topStandardParams[i]);
-            }
-        }
-        for (var i = 0; i < customParams.length; i++) {
-            if (customParams[i]) {
-                for (var j = 0; j < customParams[i].length; j++) {
-                    createElement(target, customParams[i][j]);
-                }
-            }
-        }
-        for (var i in bottomStandardParams) {
-            if (bottomStandardParams[i] !== null) {
-                createElement(target, bottomStandardParams[i]);
-            }
-        }
     }
 
     function validateTicket() {
@@ -393,92 +320,63 @@ var screenshotSenderMain = function(MII) {
                 + '_' + v00(d.getHours()) + v00(d.getMinutes()) + v00(d.getSeconds()) + '.png';
             return fn;
         }
-        if (!validateTicket()) return;
-        $('#screenshot-sender-main-submit').attr('disabled', true);
+        if (!validateTicket()) return false;
+        $('#screenshot-sender-submit').attr('disabled', true);
 
-        var msg = new xmlrpcmsg('ticket.create');
-        msg.addParam(new xmlrpcval($('#screenshot-sender-property-sumarry').val().trim()));
-        var desc = $('#screenshot-sender-property-description').val().trim();
-        var fn;
-        if (imageParams) {
-            fn = imageFileName();
-            desc += '\n\n[[Image(' + fn;
-            desc += imageParams[1] > 320 ? ',320px)]]' : ')]]';
-        }
-        msg.addParam(new xmlrpcval(desc));
-        var _attr = {
-            'reporter': new xmlrpcval($('#screenshot-sender-property-reporter').val().trim())
-        }
-
+        var attr = {}
         $('.screenshot-sender-property').each(function() {
             var id = this.id.substr(idPrefix.length);
             if (this.tagName == 'INPUT') {
                 if (this.type == 'checkbox') {
-                    if (this.checked) {
-                        _attr[id] = new xmlrpcval(this.value);
-                    }
+                    // XXX unchecked value must be '0' in all BTS
+                    attr[id] = this.checked ? this.value : '0';
                 } else {
-                    _attr[id] = new xmlrpcval(this.value);
+                    attr[id] = this.value;
                 }
             } else if (this.tagName == 'TEXTAREA') {
-                _attr[id] = new xmlrpcval(this.textContent);
+                attr[id] = this.value;
             } else if (this.tagName == 'SELECT') {
-                _attr[id] = new xmlrpcval(this.value);
+                if (this.multiple) {
+                    attr[id] = [];
+                    $('option:selected', this).each(function(){
+                        attr[id].push($(this).val());
+                    });
+                } else {
+                    attr[id] = this.value;
+                }
             } else if (this.tagName == 'SPAN') { // radio
                 $(':checked', this).each(function() {
-                    _attr[id] = new xmlrpcval(this.value);
+                    attr[id] = this.value;
                 });
             }
         });
 
-        var attr = new xmlrpcval();
-        attr.addStruct(_attr);
-        msg.addParam(attr);
-        msg.addParam(new xmlrpcval(true, 'boolean'));   // notify parameter
-        XMLHttpRequest = FulmoXMLHttpRequest;
-        client.send(msg, 30, function(res) {
-            function complete() {
+        currentDriver.send({
+            loginProperties: loginProperties,
+            sumarry: $('#screenshot-sender-property-sumarry').val().trim(),
+            description: $('#screenshot-sender-property-description').val().trim(),
+            imageParams: imageParams,
+            imageFileName: imageParams ? imageFileName() : null,
+            reporter: $('#screenshot-sender-property-reporter').val().trim(),
+            attributes: attr,
+            error: function(message) {
+                alert(MII.getString('fulmo_main_message_create_ticket_failed') + "\n\n" + message);
+                $('#screenshot-sender-submit').attr('disabled', false);
+            },
+            success: function(url) {
+                $('#screenshot-sender-submit').attr('disabled', false);
                 if ($('#screenshot-sender-open-ticket').attr('checked')) {
-                    var url = account.url;
-                    if (url.charAt(url.length - 1) != '/') url += '/';
-                    url += 'ticket/' + no;
                     MII.openURL(url);
                 }
+                _dirty = false;
                 window.close();
             }
-
-            if (res.faultCode()) {
-                alert(MII.getString('fulmo_main_message_create_ticket_failed') + "\n\n" + res.faultString());
-                $('#screenshot-sender-main-submit').attr('disabled', false);
-                return;
-            }
-            var no = res.val.me;
-            if (imageParams) {
-                var desc = '';
-                var data = base64_decode(imageParams[0].substr('data:image/png;base64,'.length));
-                var msg = new xmlrpcmsg('ticket.putAttachment');
-                msg.addParam(new xmlrpcval(no, 'int'));
-                msg.addParam(new xmlrpcval(fn));
-                msg.addParam(new xmlrpcval(desc));
-                msg.addParam(new xmlrpcval(data, 'base64'));
-                XMLHttpRequest = FulmoXMLHttpRequest;
-                client.send(msg, 30, function(res) {
-                    if (res.faultCode()) {
-                        alert(MII.getString('fulmo_main_message_create_ticket_but_could_not_put_img') + "\n\n" + res.faultString());
-                        $('#screenshot-sender-main-submit').attr('disabled', false);
-                        return;
-                    }
-                    $('#screenshot-sender-main-submit').attr('disabled', false);
-                    complete();
-                });
-                XMLHttpRequest = FulmoXMLHttpRequestBackup;
-            } else {
-                complete();
-            }
         });
-        XMLHttpRequest = FulmoXMLHttpRequestBackup;
         return false;
-        
     }
 
+    screenshotSenderMain.setImage = function(imageUrl) {
+        imageParams[0] = imageUrl;
+        imageResize();
+    }
 }

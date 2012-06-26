@@ -4,6 +4,10 @@
 <dialog id="pref" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
   title="&fulmo_setting_title;" ondialogaccept="return screenshotSenderSettings.ok()">
   <script type="text/javascript" src="scripts/libs/xmlrpc_lib.js" />
+  <script type="text/javascript" src="scripts/bts-driver/trac.js" ></script>
+  <script type="text/javascript" src="scripts/bts-driver/ciklone.js" ></script>
+  <script type="text/javascript" src="scripts/bts-driver/redmine.js" ></script>
+  <script type="text/javascript" src="scripts/bts.js" ></script>
   <script type="text/javascript" src="scripts/settings-manager.js" />
   <script type="text/javascript" src="scripts/settings.js" />
   <script type="text/javascript" src="scripts/startup-settings.js" />
@@ -55,17 +59,15 @@
                       <row>
                         <label id="screenshot-sender-account-site-type-lv" value="&fulmo_setting_label_site_type;" />
                         <menulist id="screenshot-sender-account-site-type" onselect="screenshotSenderSettings.onChange()" >
-                          <menupopup>
-                            <menuitem label="Trac &amp; ciklone.com" value="trac"/>
-                          </menupopup>
+                          <menupopup id="screenshot-sender-bts-menu" />
                         </menulist>
                       </row>
                       <row>
                         <label id="screenshot-sender-account-auth-type-lv" value="&fulmo_setting_label_auth_type;" />
                         <menulist id="screenshot-sender-account-auth-type" onselect="screenshotSenderSettings.onChange()" >
                           <menupopup>
-                            <menuitem label="&fulmo_setting_option_auth_type_no_auth;" value="0"/>
-                            <menuitem label="&fulmo_setting_option_auth_type_http;" value="1"/>
+                            <menuitem label="&fulmo_setting_option_auth_type_no_auth;" value="none"/>
+                            <menuitem label="&fulmo_setting_option_auth_type_http;" value="http"/>
                           </menupopup>
                         </menulist>
                       </row>

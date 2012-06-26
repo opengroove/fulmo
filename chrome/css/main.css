@@ -1,5 +1,5 @@
 * {
- font-family: "Arial", "san-serif", "メイリオ", "ＭＳ Ｐゴシック","Osaka","verdana","palatino";
+ font-family: "Arial","メイリオ","ＭＳ Ｐゴシック","Osaka","verdana","palatino","sans-serif";
  font-size: 12px;
 }
 
@@ -17,16 +17,17 @@ body {
 }
 
 form {
+ padding-bottom: 40px;
 }
 
 #screenshot-sender-header {
  height: 32px;
 }
 
-#screenshot-sender-main-body-filed {
+#screenshot-sender-body-field {
 }
 
-#screenshot-sender-main-body-filed p {
+#screenshot-sender-body-field p {
  margin: 0;
  padding: 4px 16px 0 4px;
 }
@@ -35,11 +36,11 @@ form {
  margin: 4px 0 0 0;
 }
 
-#screenshot-sender-main-body-filed p {
+#screenshot-sender-body-field p {
  position:relative;
 }
 
-.screenshot-sender-main-item-label {
+.screenshot-sender-item-label {
  position: absolute; 
  z-index: 1;
  top: 8px; 
@@ -49,7 +50,7 @@ form {
  font-weight: normal;
 }
 
-#screenshot-sender-main-body-filed input {
+#screenshot-sender-body-field input {
  position: relative;
  z-index: 3;
  border-radius: 8px;
@@ -61,7 +62,7 @@ form {
  background: transparent;
 }
 
-#screenshot-sender-main-body-filed textarea {
+#screenshot-sender-body-field textarea {
  position: relative;
  z-index: 3;
  border-radius: 8px;
@@ -79,7 +80,8 @@ form {
 
 .screenshot-sender-property {
  display: block;
- margin: 0 0 0 108px;
+ margin: 0 4px 0 32%;
+ width: 60%;
 }
 
 .screenshot-sender-property label {
@@ -111,7 +113,7 @@ h2 {
  font-size: 12px;
 }
 
-#screenshot-sender-main-image-filed {
+#screenshot-sender-image-field {
  position: absolute;
  top: 8px;
  left: 100%;
@@ -128,12 +130,13 @@ h2 {
  overflow: hidden;
 }
 
-#screenshot-sender-main-image-filed p {
+#screenshot-sender-image-field p {
  padding: 0;
  margin: 0 0 12px 0;
+ width: 120px;
 }
 
-#screenshot-sender-main-image-filed p span {
+#screenshot-sender-image-field p span {
  color: #ffffff;
  padding-left: 20px;
  background: no-repeat;
@@ -141,33 +144,79 @@ h2 {
  cursor: pointer;
 }
 
-#screenshot-sender-main-property-filed {
+#screenshot-sender-image-field ul {
+ margin: 0 0 0 120px;
+ padding: 0;
+}
+
+#screenshot-sender-image-field ul li {
+ display: inline;
+ float: right;
+ padding: 0;
+ margin: 0 0 0 4px;
+}
+
+#screenshot-sender-image-field ul li a {
+ color: #333;
+ background: #ccc;
+ padding: 2px;
+ border: #666 1px solid;
+ border-radius: 4px;
+ text-decoration: none;
+}
+
+#screenshot-sender-image-field ul li a:hover {
+ color: #f00;
+ background: #ccc;
+}
+
+
+#screenshot-sender-property-field {
  clear: both;
 }
 
-#screenshot-sender-main-image {
+#screenshot-sender-image {
  -moz-box-shadow: 2px 2px 10px #000;
  -webkit-box-shadow: 2px 2px 10px #000;
 }
 
-#property-block {
+#screenshot-sender-image-field p span#screenshot-sender-image-open {
+ text-decoration: none;
+}
+
+#screenshot-sender-image-field-save, #screenshot-sender-image-field-edit {
+ display: inline-block;
+ width: 16px;
+ height: 16px;
+ background: transparent none no-repeat center;
+ cursor: pointer;
+ opacity: 0.75;
+}
+#screenshot-sender-image-field-save:hover, #screenshot-sender-image-field-edit:hover {
+ opacity: 1;
+}
+#screenshot-sender-image-field-save { background-image: url(images/save.png) }
+#screenshot-sender-image-field-edit { background-image: url(images/edit.png) }
+
+#screenshot-sender-property-list {
  margin: 12px 0 0 0 ;
  padding: 0 0 12px 0;
 }
 
-#property-block li {
+#screenshot-sender-property-list li {
  list-style: none;
  float: left;
- width: 276px;
+ width: 40%;
+ min-width: 270px;
  min-height: 22px;
  padding: 2px;
 }
 
-#property-block input {
+#screenshot-sender-property-list input {
  border: 1px #ccc solid;
 }
 
-#property-block select {
+#screenshot-sender-property-list select {
  border: 1px #ccc solid;
 }
 
@@ -175,7 +224,7 @@ h2 {
  float: left;
  font-weight: bold;
  display: inline-block;
- width: 100px;
+ width: 30%;
  vertical-align: top;
  text-align: right;
  padding: 2px 4px 2px 2px;
@@ -211,7 +260,7 @@ h2 {
  background: #fff;
 }
 
-#screenshot-sender-main-submit-wrapeer {
+#screenshot-sender-submit-wrapeer {
  padding: 0;
  position: absolute;
  text-align: center;
@@ -239,3 +288,4 @@ h2 {
  display: inline-block;
  width: 100px;
 }
+

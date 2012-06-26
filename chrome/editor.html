@@ -1,0 +1,152 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title class="i18n">fulmo_editor_title</title>
+<link rel="stylesheet" type="text/css" href="css/themes/d/jquery-ui-1.8.14.custom.css" />
+<link rel="stylesheet" type="text/css" href="css/jquery.multiselect.css" />
+<link rel="stylesheet" type="text/css" href="css/editor.css?9" />
+<link rel="INDEX" href="./" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<script type="text/javascript" src="scripts/libs/jquery-1.5.2.min.js"></script>
+<script type="text/javascript" src="scripts/libs/jquery-ui-1.8.12.custom.min.js" ></script>
+<script type="text/javascript" src="scripts/libs/jquery.multiselect.js" ></script>
+<script type="text/javascript" src="scripts/libs/jquery.infieldlabel.js" ></script>
+<script type="text/javascript" src="scripts/editor.js"></script>
+<script type="text/javascript" src="scripts/local-file.js"></script>
+<script type="text/javascript" src="scripts/startup-editor.js"></script>
+<script type="text/javascript">/*<![CDATA[*/
+  jQuery(document).ready(function($) {
+    $('a').attr('href', 'javascript:void(0)');
+    $('#tool-bar a').each(function() {
+      if (this.getAttribute('draggable') === null) {
+        this.setAttribute('draggable', 'false');
+      }
+    });
+  });
+/*]]>*/</script>
+</head>
+<body>
+<div id="tool-bar-wrapper">
+<div id="tool-bar-wrapper-left"></div>
+<div id="tool-bar-wrapper-right"></div>
+<ul id="tool-bar">
+ <li class="mode-selector" id="btn-sel"><a class="menu icon">Select</a>
+ </li>
+ <li class="mode-selector" id="btn-poly"><a class="menu icon selected"><span class="openable">Poly</span></a>
+  <div class="ui-pane">
+   <div id="poly-type" class="selector typify">
+    <a id="poly-rect" class="icon">Rect</a><br />
+    <a id="poly-radius-rect" class="icon selected">Radical Rect</a><br />
+    <a id="poly-ellipse" class="icon">Ellipse</a><br />
+   </div>
+   <hr />
+   <div id="paint-mode" class="selector">
+    <a id="paint-mode-edge" class="icon selected">Edge</a><br />
+    <a id="paint-mode-all" class="icon">Paint</a>
+   </div>
+  </div>
+ </li>
+ <li class="mode-selector" id="btn-edit"><a class="menu icon">Correction</a>
+ </li>
+ <li class="mode-selector" id="btn-text"><a class="menu icon"><span class="openable">Text</span></a>
+  <div class="ui-pane">
+   <div id="text-size" class="selector">
+    <a id="text-size-10" class="i18n txt">fulmo_editor_text_small</a>
+    <a id="text-size-12" class="i18n txt selected">fulmo_editor_text_middle</a>
+    <a id="text-size-16" class="i18n txt">fulmo_editor_text_large</a>
+    <a id="text-size-20" class="i18n txt">fulmo_editor_text_xlarge</a>
+   </div>
+  </div>
+ </li>
+ <li class="mode-selector" id="btn-line"><a class="menu icon">Line</a> </li>
+ <li class="mode-selector" id="btn-arrow"><a class="menu icon">Arrow</a></li>
+ <li class="mode-selector" id="btn-both-arrow"><a class="menu icon">Both arrow</a></li>
+ <li class="mode-selector" id="btn-free"><a class="menu icon">Free hand</a></li>
+
+ <li id="btn-pen-width"><a class="menu icon"><span class="openable">Line type</span></a>
+  <div class="ui-pane">
+   <div id="pen-width" class="selector">
+    <a id="width-2">Thin</a>
+    <a id="width-4" class="selected" >Middle</a>
+    <a id="width-6">Thick</a>
+    <a id="width-8">Very thick</a>
+   </div>
+  </div>
+ </li>
+
+ <li id="btn-color"><a class="menu icon"><span class="openable">Color</span></a>
+  <div class="ui-pane">
+   <div id="pen-color" class="selector">
+    <a id="color-000000"></a>
+    <a id="color-808080"></a>
+    <a id="color-FF0000" class="selected"></a>
+    <a id="color-000080"></a>
+    <a id="color-FFFF00" class="darktext"></a>
+    <a id="color-808000"></a>
+    <a id="color-00FF00" class="darktext"></a>
+    <a id="color-008000"></a>
+    <a id="color-00FFFF" class="darktext"></a>
+    <a id="color-008080"></a>
+    <a id="color-0000FF"></a>
+    <a id="color-000080"></a>
+    <a id="color-FF00FF"></a>
+    <a id="color-800080"></a>
+    <a id="color-FFFFFF" class="darktext"></a>
+    <a id="color-C0C0C0" class="darktext"></a>
+   </div>
+  </div>
+ </li>
+
+ <li class="mode-selector" id="btn-num"><a class="menu icon">Number</a>
+ <li class="mode-selector" id="btn-lib"><a class="menu"><span class="openable i18n">fulmo_editor_btn_library</span></a>
+  <div class="ui-pane">
+   <a><img src="stamps/en/approved.png" width="100" /></a><a><img src="stamps/jp/approved.png" width="100" /></a><br />
+   <a><img src="stamps/en/as_is.png" width="100" /></a><a><img src="stamps/jp/as_is.png" width="100" /></a><br />
+   <a><img src="stamps/en/confidential.png" width="100" /></a><a><img src="stamps/jp/confidential.png" width="100" /></a><br />
+   <a><img src="stamps/en/copy.png" width="100" /></a><a><img src="stamps/jp/copy.png" width="100" /></a><br />
+   <a><img src="stamps/en/departmental.png" width="100" /></a><a><img src="stamps/jp/departmental.png" width="100" /></a><br />
+   <a><img src="stamps/en/done.png" width="100" /></a><a><img src="stamps/jp/done.png" width="100" /></a><br />
+   <a><img src="stamps/en/draft.png" width="100" /></a><a><img src="stamps/jp/draft.png" width="100" /></a><br />
+   <a><img src="stamps/en/experimental.png" width="100" /></a><a><img src="stamps/jp/experimental.png" width="100" /></a><br />
+   <a><img src="stamps/en/expired.png" width="100" /></a><a><img src="stamps/jp/expired.png" width="100" /></a><br />
+   <a><img src="stamps/en/final.png" width="100" /></a><a><img src="stamps/jp/final.png" width="100" /></a><br />
+   <a><img src="stamps/en/for_comment.png" width="100" /></a><a><img src="stamps/jp/for_comment.png" width="100" /></a><br />
+   <a><img src="stamps/en/not_approved.png" width="100" /></a><a><img src="stamps/jp/not_approved.png" width="100" /></a><br />
+   <a><img src="stamps/en/not_public_release.png" width="100" /></a><a><img src="stamps/jp/not_public_release.png" width="100" /></a><br />
+   <a><img src="stamps/en/public_release.png" width="100" /></a><a><img src="stamps/jp/public_release.png" width="100" /></a><br />
+   <a><img src="stamps/en/sample.png" width="100" /></a><a><img src="stamps/jp/sample.png" width="100" /></a><br />
+   <a><img src="stamps/en/to_do.png" width="100" /></a><a><img src="stamps/jp/to_do.png" width="100" /></a><br />
+   <a><img src="stamps/en/top_secret.png" width="100" /></a><a><img src="stamps/jp/top_secret.png" width="100" /></a><br />
+  </div>
+ </li>
+
+ <li><a class="menu separator" id="btn-drag" draggable="true"><span class="i18n">fulmo_editor_btn_drag</span></a></li>
+ <li><a class="menu" id="btn-save" draggable="true"><span class="i18n">fulmo_editor_btn_save</span></a></li>
+ <li><a class="menu" id="btn-send"><span class="i18n">fulmo_editor_btn_send</span></a></li>
+</ul>
+</div>
+<div id="tool-window">
+</div>
+<div id="canvas-wrapper">
+    <canvas id="main-canvas"></canvas>
+    <div id="layers">
+    </div>
+    <canvas id="ctrl-canvas">
+    </canvas>
+    <div id="primitive-tools">
+        <div id="drag-TL" class="drag-box"></div>
+        <div id="drag-T" class="drag-box"></div>
+        <div id="drag-TR" class="drag-box"></div>
+        <div id="drag-L" class="drag-box"></div>
+        <div id="drag-R" class="drag-box"></div>
+        <div id="drag-BL" class="drag-box"></div>
+        <div id="drag-B" class="drag-box"></div>
+        <div id="drag-BR" class="drag-box"></div>
+        <div id="prim-delete"></div>
+    </div>
+</div>
+<div><textarea id="text-editor" cols="10" rows="5"></textarea></div>
+<div id="work"><img id="num-bg" src="stamps/number_bg.png" /></div>
+</body>

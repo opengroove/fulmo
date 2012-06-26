@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011, OpenGroove, Inc. All rights reserved.
+ * Copyright (C) 2012, OpenGroove, Inc. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -53,6 +53,7 @@ var ScreenshotSenderSettings = function(SII /* settingInterfaceImplementation */
 
         var list = document.getElementById('screenshot-sender-account-list');
         var currentPos = 0;
+        SII.setupBtsMenu();
         if (settings.accounts.length) {
             for (var i = 0; i <  settings.accounts.length; i++) {
                 var li = SII.addListItem('screenshot-sender-account-list', settings.accounts[i].name, settings.accounts[i].id);
@@ -208,15 +209,28 @@ var ScreenshotSenderSettings = function(SII /* settingInterfaceImplementation */
     }
 
     function getCurrentAccount(isNew) {
-        return {
+        var url = document.getElementById('screenshot-sender-account-url').value;
+        var out = {
             id:         isNew ? getAccountNewId() : currentId,
             name:       document.getElementById('screenshot-sender-account-name').value,
-            url:        document.getElementById('screenshot-sender-account-url').value,
+            url:        url,
             siteType:   SII.listValue('screenshot-sender-account-site-type'),
-            authType:   parseInt(SII.listValue('screenshot-sender-account-auth-type')),
+            authType:   SII.listValue('screenshot-sender-account-auth-type'),
             userId:     document.getElementById('screenshot-sender-account-user-id').value,
-            password:   document.getElementById('screenshot-sender-account-password').value
+            password:   document.getElementById('screenshot-sender-account-password').value,
+            errorMessage: null,
+            isValid:    function(){ return this.errorMessage === null; }
         }
+        if (url.match(urlRegex)) {
+            out.protocol = RegExp.$1;
+            out.host = RegExp.$2;
+            out.port = 0 + RegExp.$5;
+            if (!out.port) out.port =out.protocol == 'http' ? 80 : 443;
+            out.path = RegExp.$6;
+        } else {
+            out.errorMessage = SII.getString('fulmo_setting_message_url_warn');
+        }
+        return out;
     }
 
     this.addAccount = function() {
@@ -327,22 +341,18 @@ var ScreenshotSenderSettings = function(SII /* settingInterfaceImplementation */
 
         function testStart() {
             SII.testStart();
-            var msg = new xmlrpcmsg('system.getAPIVersion');
-            xmlHttpRequestCredential.cleanup();
-            var client = new xmlrpc_client(path, host, port, protocol);
-            if (account.authType == 1) {
-                client.setCredentials(account.userId, account.password, 0);
-            }
-            XMLHttpRequest = FulmoXMLHttpRequest;
-            client.send(msg, 180, function(res){
-                SII.testEnd();
-                if (res.faultCode()) {
-                    alert(SII.getFormattedString('fulmo_test_message_failed', [url, res.faultString()]));
-                } else {
-                    alert(SII.getFormattedString('fulmo_test_message_succeeded', [url ,res.val.me[0].me, res.val.me[1].me, res.val.me[2].me]));
+            fulmo_bts_drivers[account.siteType].loginTest({
+                account: account,
+                formatString: SII.getFormattedString,
+                success: function(message) {
+                    SII.testEnd();
+                    alert(message);
+                },
+                error: function(message) {
+                    SII.testEnd();
+                    alert(message);
                 }
             });
-            XMLHttpRequest = FulmoXMLHttpRequestBackup;
         }
 
         function testEnd() {
@@ -350,30 +360,12 @@ var ScreenshotSenderSettings = function(SII /* settingInterfaceImplementation */
         }
 
         var account = getCurrentAccount(true);
-        if (account.url.match(urlRegex)) {
-            var url = account.url;
-            var protocol = RegExp.$1;
-            var host = RegExp.$2;
-            var port = 0 + RegExp.$5;
-            if (!port) port = protocol == 'http' ? 80 : 443;
-            var path = RegExp.$6;
-            if (path.charAt(path.length - 1) != '/') {
-                url += '/';
-                path += '/';
-            }
-            if (!account.authType) { // no password
-                path += 'rpc';
-                url += 'rpc';
-            } else {
-                path += 'login/rpc';
-                url += 'login/rpc';
-            }
-        } else {
-            alert(SII.getString('fulmo_setting_message_url_warn'));
+        if (!account.isValid()) {
+            alert(account.errorMessage);
             return;
         }
 
-        if (account.authType == 0) {
+        if (account.authType == 'none') {
             testStart();
             testEnd();
         } else {

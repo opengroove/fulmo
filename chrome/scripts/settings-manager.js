@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011, OpenGroove, Inc. All rights reserved.
+ * Copyright (C) 2012, OpenGroove, Inc. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -39,7 +39,25 @@ var fulmoSettingsManager = new (function() {
         } catch(e) {
         }
         if (!tmp) tmp = '{}';
-        return JSON.parse(tmp);
+        var params = JSON.parse(tmp);
+        if (params.accounts) {
+            for (var i = 0; i < params.accounts.length; i++) {
+                var account = params.accounts[i];
+                switch (account.authType) {
+                case null:
+                case 0: account.authType = 'none'; break;
+                case 1: account.authType = 'http'; break;
+                }
+                if (account.siteType == null || account.siteType == 'trac') {
+                    if (account.url.match(/^https:\/\/[^.]+\.ciklone\.com\//)) {
+                        account.siteType = 'ciklone';
+                    } else {
+                        account.siteType = 'trac';
+                    }
+                }
+            }
+        }
+        return params;
     };
 })();
 

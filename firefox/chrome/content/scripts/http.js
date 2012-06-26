@@ -1,3 +1,31 @@
+/*
+ * Copyright (C) 2012, OpenGroove, Inc. All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 
+ *  1. Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *  2. Redistributions in binary form must reproduce the above
+ *     copyright notice, this list of conditions and the following
+ *     disclaimer in the documentation and/or other materials provided
+ *     with the distribution.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
 var xmlHttpRequestCredential = new function() {
     var _isProxy = false;
     var _challenge = null;
@@ -52,6 +80,9 @@ var FulmoXMLHttpRequest = function() {
     var _THIS = this;
     var _ioService
     var _requestText;
+    var _listener;
+    var _observeListener;
+    var _callback;
 
     var READY_STATE_UNINITIALIZED = 0;
     var READY_STATE_LOADING       = 1;
@@ -78,6 +109,7 @@ var FulmoXMLHttpRequest = function() {
         }
         this.statusText = '';
         this.responseText = '';
+        this.responseXML = null;
         this.status = 0;
     };
     
@@ -100,23 +132,29 @@ var FulmoXMLHttpRequest = function() {
     this.abort = function() {
     };
 
-    this.responseXML = 'not support';
+    this.responseXML = null;
 
-    this.send = function(data) {
-        _requestText = unescape(encodeURIComponent(data));
+    this.send = function(data, callback) {
+        this.sendAsBinary(unescape(encodeURIComponent(data)), callback);
+    };
+
+    this.sendAsBinary = function(data, callback) {
+        _callback = callback;
+        _requestText = data;
         _THIS.readyState = READY_STATE_LOADING;
         _THIS.onreadystatechange();
-
         _ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
         _channel = setupChannel(_requestText);
         _listener.startup();
         _channel.asyncOpen(_listener, null);
-
     };
 
     _listener = new function StreamListener() {
         var _data = '';
         var _authCallback = false;
+        var observerService = Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
+        observerService.addObserver(this, "http-on-modify-request", false);
+        observerService.addObserver(this, "http-on-examine-response", false);
 
         this.startup = function() {
             _authCallback = false;
@@ -171,11 +209,19 @@ var FulmoXMLHttpRequest = function() {
                 _authCallback();
             } else {
                 if (Components.isSuccessCode(aStatus)) {
-                    _THIS.responseText = decodeURIComponent(escape(_data));
+                    var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
+                                              .createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+                    // XXX response data is charset=utf-8 at any time
+                    converter.charset = "UTF-8";
+                    _data = converter.ConvertToUnicode(_data);
+                    _THIS.responseText = _data;
+                    var parser = new DOMParser();
+                    _THIS.responseXML = parser.parseFromString(_data, 'application/xml');
                 } else {
                 }
                 _THIS.readyState = READY_STATE_COMPLETE;
                 _THIS.onreadystatechange();
+                if (_callback) _callback();
             }
         };
 
@@ -195,13 +241,25 @@ var FulmoXMLHttpRequest = function() {
         this.onStatus = function (aRequest, aContext, aStatus, aStatusArg) {};
         this.onRedirect = function (aOldChannel, aNewChannel) {};
 
+        this.observe = function(aSubject, aTopic, aData) {
+            if (aSubject == _channel) {
+                var httpChannel = aSubject.QueryInterface(Components.interfaces.nsIHttpChannel);
+                if (aTopic == "http-on-modify-request") {
+                    httpChannel.setRequestHeader('Cookie', '', false);
+                } else if (aTopic == "http-on-examine-response") {
+                    httpChannel.setResponseHeader('Set-Cookie', '', false);
+                }
+            }
+        };
+
         this.QueryInterface = function(aIID) {
             if (aIID.equals(Components.interfaces.nsISupports) ||
                 aIID.equals(Components.interfaces.nsIInterfaceRequestor) ||
                 aIID.equals(Components.interfaces.nsIChannelEventSink) || 
                 aIID.equals(Components.interfaces.nsIProgressEventSink) ||
                 aIID.equals(Components.interfaces.nsIHttpEventSink) ||
-                aIID.equals(Components.interfaces.nsIStreamListener)) {
+                aIID.equals(Components.interfaces.nsIStreamListener) ||
+                aIID.equals(Components.interfaces.nsIObserver)) {
                     return this;
             }
             throw Components.results.NS_NOINTERFACE;

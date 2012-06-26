@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011, OpenGroove, Inc. All rights reserved.
+ * Copyright (C) 2012, OpenGroove, Inc. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -87,6 +87,12 @@ chrome.extension.onRequest.addListener(
                 imageParams = req.params;
                 window.open('main.html', '_blank', 'resizable,centerscreen,scrollbars,width=600,height=800');
                 sendResponse({});
+            } else if (req.command == 'openEditor') {
+                imageParams = req.params;
+                chrome.windows.getCurrent(function(w){
+                    window.open('editor.html', '_blank', 'resizable,centerscreen,scrollbars,width=' + w.width + ',height=' + w.height);
+                    sendResponse({});
+                })
             } else if (req.command == 'openSettingWindow') {
                 window.open('settings.html');
                 sendResponse({});

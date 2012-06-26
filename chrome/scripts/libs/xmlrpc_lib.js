@@ -350,7 +350,7 @@ xmlrpc_client.prototype.send = function (msg, timeout, method)
         // If you read note #1035754, in the post above, you will see that, in IE, if we try to instantiate
         // first the native XMLHttpRequest and then an activeX dom object, we might get
         // into trouble, using mismatched versions... oh so typical of them...
-        httpconn = new XMLHttpRequest();
+        httpconn = new FulmoXMLHttpRequest();
     }
     catch(e)
     {
@@ -2392,51 +2392,6 @@ function xmlrpc_encode_entities(data, src_encoding, dest_encoding)
 }
 
 /******************************************************************************/
-
-/**
-* @type xmlrpcval
-* @private
-*/
-String.prototype.toXmlRpcVal = function(options) {
-    return new xmlrpcval(this.toString());
-}
-
-/**
-* @type xmlrpcval
-* @todo: see if there are faster checks than parseInt and parseFloat
-* @private
-*/
-Number.prototype.toXmlRpcVal = function(options) {
-    if (this == parseInt(this))
-    {
-        return new xmlrpcval(this.valueOf(), 'int');
-    }
-    else //if (this == parseFloat(this))
-    {
-        return new xmlrpcval(this.valueOf(), 'double');
-    }
-    //else
-    //{
-        // ??? only NaN and Infinity can get here. Encode them as zero (double)...
-    //  return new xmlrpcval(0, 'double');
-    //}
-}
-
-/**
-* @type xmlrpcval
-* @private
-*/
-Boolean.prototype.toXmlRpcVal = function(options){
-    return new xmlrpcval(this.valueOf(), 'boolean');
-}
-
-/**
-* @type xmlrpcval
-* @private
-*/
-Date.prototype.toXmlRpcVal = function(options) {
-    return new xmlrpcval(iso8601_encode(this), 'dateTime.iso8601');
-}
 
 /**
  * Used to parse xml nodes: retrieve the single child if it is of correct type.

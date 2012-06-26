@@ -11,7 +11,11 @@
 <script type="text/javascript" src="scripts/libs/jquery-1.5.2.min.js" ></script>
 <script type="text/javascript" src="scripts/libs/formatstring.js" ></script>
 <script type="text/javascript" src="scripts/libs/jquery-ui-1.8.12.custom.min.js" ></script>
-<script type="text/javascript" src="scripts/libs/sjcl.js" ></script>
+<script type="text/javascript" src="scripts/sjcl.js" ></script>
+<script type="text/javascript" src="scripts/bts-driver/trac.js" ></script>
+<script type="text/javascript" src="scripts/bts-driver/ciklone.js" ></script>
+<script type="text/javascript" src="scripts/bts-driver/redmine.js" ></script>
+<script type="text/javascript" src="scripts/bts.js" ></script>
 <script type="text/javascript" src="scripts/settings-manager.js" ></script>
 <script type="text/javascript" src="scripts/settings.js" ></script>
 <script type="text/javascript" src="scripts/startup-settings.js" ></script>
@@ -50,14 +54,13 @@
                     <br />
                     <label id="screenshot-sender-account-site-type-lv"><span class="i18n">fulmo_setting_label_site_type</span>
                         <select id="screenshot-sender-account-site-type">
-                            <option value="trac"/>Trac &amp; ciklone.com</option>
                         </select>
                       </label>
                     <br />
                     <label id="screenshot-sender-account-auth-type-lv"><span class="i18n">fulmo_setting_label_auth_type</span>
                         <select id="screenshot-sender-account-auth-type">
-                        <option value="0" class="i18n" />fulmo_setting_option_auth_type_no_auth</option>
-                        <option value="1" class="i18n" />fulmo_setting_option_auth_type_http</option>
+                        <option value="none" class="i18n" />fulmo_setting_option_auth_type_no_auth</option>
+                        <option value="http" class="i18n" />fulmo_setting_option_auth_type_http</option>
                         </select>
                       </label>
                     <br />

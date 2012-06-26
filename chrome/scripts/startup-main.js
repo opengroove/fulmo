@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011, OpenGroove, Inc. All rights reserved.
+ * Copyright (C) 2012, OpenGroove, Inc. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -26,10 +26,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+(function($) {
+    // Like stringbundle.getFormattedString
+    $.formatString = function(format, args) {
+        var count = 0;
+        return format.replace(/%[S%]/g, function(match) {
+            var value;
+            switch (match) {
+            case '%S':
+                value = args[count];
+                break;
+            case '%%':
+                return '%';
+            default:
+                return match;
+            }
+            count++;
+            return value;
+        });
+    };
+})(jQuery);
+
 $(function() {
+    var dialogInit = false;
     var mainInterfaceImplementation = {
         getImageParams:  function() {
-            return window.opener.imageParams;
+            var p= window.opener.imageParams;
+            //window.opener.imageParams = null;
+            return p;
         },
         setImageParams: function(v) {
             imageParams = [
@@ -37,20 +61,46 @@ $(function() {
             ];
         },
         getString: function(tag) {
-            return chrome.i18n.getMessage(tag);
+            try {
+                return chrome.i18n.getMessage(tag);
+            }
+            catch (e) {
+                if (window.console && console.log)
+                    console.log([e, tag]);
+                return tag;
+            }
         },
         getFormattedString: function(tag, prm) {
-            return $.formatString(chrome.i18n.getMessage(tag), prm);
+            try {
+                return $.formatString(chrome.i18n.getMessage(tag), prm);
+            }
+            catch (e) {
+                if (window.console && console.log)
+                    console.log([e, tag, prm]);
+                return tag;
+            }
+        },
+        showImageDialog: function(message, filename, callbackDataURL) {
+            screenshotSenderLocalFile.saveImage(message, filename, callbackDataURL);
         },
         login: function(account, succFunc, failFunc) {
             if (account.userId.length && account.password.length) {
                 succFunc();
                 return;
             }
-            if (!parseInt(account.authType)) {
+            if (account.authType == 'none') {
                 succFunc();
                 return;
             }
+            if (!dialogInit) {
+                $('#screenshot-sender-account-dialog').dialog({
+                    autoOpen: false,
+                    modal: true,
+                    width: 320
+                });
+                dialogInit = true;
+            }
+
             var okButtonPushed = false;
             $('#screenshot-sender-account-name').text(account.name);
             if (account.userId.length) {
@@ -100,12 +150,12 @@ $(function() {
         },
         openURL: function(url) {
             window.open(url, '_blank');
+        },
+        openEditorTab: function(imageParams, dirty) {
+            var dirty_str = dirty ? '#dirty=1' : '';
+            location.href = 'editor.html' + dirty_str;
         }
+
     };
-    $('#screenshot-sender-account-dialog').dialog({
-        autoOpen: false,
-        modal: true,
-        width: 320
-    });
     screenshotSenderMain(mainInterfaceImplementation);
 }, false);
