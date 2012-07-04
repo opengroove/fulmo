@@ -195,7 +195,7 @@ fulmo_bts_driver_redmine.prototype = {
         var urlParams = [
             [
                 // プロジェクトl情報取得
-                baseUrl + 'projects.xml',function(index) {
+                baseUrl + 'projects.xml?limit=1200',function(index) {
                     var arr = client.responseXML.getElementsByTagName('project');
                     tmp = [];
                     for (var i = 0; i < arr.length; i++) {
@@ -452,7 +452,7 @@ fulmo_bts_driver_redmine.prototype = {
                 ],
                 [
                     // プロジェクト取得
-                    baseUrl + 'projects.xml',function(index) {
+                    baseUrl + 'projects.xml?limit=1200',function(index) {
                         var arr = client.responseXML.getElementsByTagName('project');
                         params.projects = [];
                         for (var i = 0; i < arr.length; i++) {
@@ -784,9 +784,9 @@ fulmo_bts_driver_redmine.prototype = {
        @param {string} sumarry タイトル
        @param {string} description 概要
        @param {array} imageParams 画像情報
-        @param {string} imageParams[0] 画像のuri
-        @param {string} imageParams[1] 幅
-        @param {string} imageParams[2] 高さ
+       @param {string} imageParams[0] 画像のuri
+       @param {string} imageParams[1] 幅
+       @param {string} imageParams[2] 高さ
        @param {string} imageFileName 画像のファイル名(ベース名のみ)
        @param {string} reporter 報告者名
        @param {hash} attributes 各プロパティのIDをキーとし、設定値を値としたハッシュ。ただし複数の値を持つ場合はArrayが返される。
