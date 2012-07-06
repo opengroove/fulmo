@@ -195,7 +195,7 @@ fulmo_bts_driver_redmine.prototype = {
         var urlParams = [
             [
                 // プロジェクトl情報取得
-                baseUrl + 'projects.xml?limit=1200',function(index) {
+                baseUrl + 'projects.xml?limit=100',function(index) {
                     var arr = client.responseXML.getElementsByTagName('project');
                     tmp = [];
                     for (var i = 0; i < arr.length; i++) {
@@ -452,7 +452,7 @@ fulmo_bts_driver_redmine.prototype = {
                 ],
                 [
                     // プロジェクト取得
-                    baseUrl + 'projects.xml?limit=1200',function(index) {
+                    baseUrl + 'projects.xml?limit=100',function(index) {
                         var arr = client.responseXML.getElementsByTagName('project');
                         params.projects = [];
                         for (var i = 0; i < arr.length; i++) {
