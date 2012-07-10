@@ -62,39 +62,42 @@ function contentInterfaceImplementation(w) {
         }
     }
     this.setupContextMenu = function(params) {
-        var actions = [
-            { // 0
-                title: 'fulmo_name',
-            },
-            { // 1
-                title: 'fulmo_action_all_send',
-                icon: 'chrome://fulmo/skin/images/get_document.png',
-                command: 0
-            },
-            { // 2
-                title: 'fulmo_action_view_send',
-                icon: 'chrome://fulmo/skin/images/get_window.png',
-                command: 10
-            },
-            { // 3
-                title: 'fulmo_action_parts_send',
-                icon: 'chrome://fulmo/skin/images/get_selected_area.png',
-                command: 20
-            },
-            { // 4
-                title: 'fulmo_action_no_image_send',
-                icon: 'chrome://fulmo/skin/images/create_ticket.png',
-                command: 30
-            }
-        ];
         function create(o, trunk, no, labelMode) {
+            var label, icon, arg;
+            switch (parseInt(no)) {
+            case 1:
+                label = 'fulmo_action_all_send';
+                icon = 'get_document.png';
+                arg = 0;
+                break;
+            case 2:
+                label = 'fulmo_action_view_send';
+                icon = 'get_window.png';
+                arg = 10;
+                break;
+            case 3:
+                label = 'fulmo_action_parts_send';
+                icon = 'get_selected_area.png';
+                arg = 20;
+                break;
+            case 4:
+                label = 'fulmo_action_no_image_send';
+                icon = 'create_ticket.png';
+                arg = 30;
+                break;
+            default:
+                return;
+            }
+            label = o.getString(label);
+            if (labelMode)
+                label = o.getString('fulmo_name') + ' - ' + label;
+            icon = 'chrome://fulmo/skin/images/' + icon;
+            var command = function() { screenshotSender.goSend(arg) };
             var item = w.document.createElement('menuitem');
-            var lv = o.getString(actions[no].title);
-            if (labelMode) lv = o.getString(actions[0].title) + ' - ' + lv;
-            item.setAttribute('label', lv);
             item.className = 'menuitem-iconic screenshot-sender-menu-item';
-            item.setAttribute('image', actions[no].icon);
-            item.setAttribute('oncommand', 'screenshotSender.goSend(' + actions[no].command + ')');
+            item.setAttribute('label', label);
+            item.setAttribute('image', icon);
+            item.addEventListener('command', command, true);
             trunk.appendChild(item);
         }
         var rootMenu = w.document.getElementById("contentAreaContextMenu");
@@ -113,7 +116,7 @@ function contentInterfaceImplementation(w) {
             create(this, rootMenu, params[0], true);
         } else {
             var newMenu = w.document.createElement('menu');
-            newMenu.setAttribute('label', this.getString(actions[0].title));
+            newMenu.setAttribute('label', this.getString('fulmo_name'));
             newMenu.id = 'screenshot-sender-menu';
             rootMenu.appendChild(newMenu);
             var newPopup = w.document.createElement('menupopup');
