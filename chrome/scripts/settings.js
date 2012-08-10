@@ -32,7 +32,7 @@ var ScreenshotSenderSettings = function(SII /* settingInterfaceImplementation */
     var updated = false;
     var startupNow = true;
     var listUpdateNow = false;
-    var urlRegex = new RegExp(/^(https?):\/\/([^:\/]*)((:([0-9]+))?)(\/.*)/);
+    var urlRegex = new RegExp(/^(https?):\/\/([^:\/]*)((:([0-9]+))?)(\/.*)?/);
 
     this.init = function() {
         settings = fulmoSettingsManager.load();
