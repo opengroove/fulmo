@@ -84,7 +84,7 @@ var ScreenshotSender = function(W, CII) {
     function calcDocumentRect() {
         var doc = W().document;
         var element
-            = doc.body.scrollWidth < doc.documentElement.scrollWidth
+            = (doc.documentElement && doc.documentElement.clientHeight != 0)
             ? doc.documentElement : doc.body;
         return [0, 0, element.scrollWidth, element.scrollHeight];
     }
@@ -92,8 +92,8 @@ var ScreenshotSender = function(W, CII) {
     function calcWindowRect() {
         var doc = W().document;
         var element
-            = doc.body.clientHeight < doc.documentElement.clientHeight
-            ? doc.body : doc.documentElement;
+            = (doc.documentElement && doc.documentElement.clientHeight != 0)
+            ? doc.documentElement : doc.body;
         return [element.scrollLeft, element.scrollTop,
                 element.clientWidth, element.clientHeight];
     }
