@@ -48,11 +48,13 @@ var screenshotSenderSettings = new ScreenshotSenderSettings(new function() {
         var items = list.getElementsByTagName('listitem');
         for (var i = 0; i < items.length; i++) {
             if (items[i].value == value) {
-                list.selectItem(items[i]);
+                setTimeout(function() {
+                    list.selectItem(items[i]);
+                    listUpdateNow = false;
+                }, 0);
                 break;
             }
         }
-        listUpdateNow = false;
     };
 
     this.setCurrentListITemLabel = function(id, label) {

@@ -252,7 +252,9 @@ var ScreenshotSenderSettings = function(SII /* settingInterfaceImplementation */
         setUi(currentId);
         document.getElementById('screenshot-sender-account-name').select();
         document.getElementById('screenshot-sender-account-name').focus();
-        listUpdateNow = false;
+        setTimeout(function(){
+            listUpdateNow = false;
+        },0);
     }
 
     function getPosFromName(name) {
