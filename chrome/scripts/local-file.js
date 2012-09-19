@@ -28,10 +28,6 @@
 
 var screenshotSenderLocalFile = {
     saveImage: function(message, filename, callbackDataURL) {
-        var URL = window.URL || window.webkitURL || undefined;
-        var BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder ||
-                          undefined;
-
         function getBlobFromDataURL(url) {
             var re = /^data:([^,;]+)((?:;[^;,]*)*),([^\n]*)/;
             var match = re.exec(url);
@@ -49,16 +45,24 @@ var screenshotSenderLocalFile = {
                 }
             });
             var length = body.length;
-            var buffer = new Uint8Array(length);
+            var out = new Uint8Array(length);
             for (var i = 0; i < length; i++) {
-                buffer[i] = body.charCodeAt(i);
+                out[i] = body.charCodeAt(i);
             }
+            try {
+                return new Blob([out], {type: mimetype});
+            }
+            catch (e) {
+                // try to use BlobBuilder....
+            }
+            var BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder;
             var builder = new BlobBuilder();
-            builder.append(buffer.buffer);
+            builder.append(out.buffer);
             return builder.getBlob(mimetype);
         }
 
         callbackDataURL(function(uri) {
+            var URL = window.URL || window.webkitURL || undefined;
             var blob = getBlobFromDataURL(uri);
             var href = URL.createObjectURL(blob);
             try {
