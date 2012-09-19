@@ -1,9 +1,10 @@
 {
   "name": "__MSG_fulmo_name__",
-  "version": "1.0.1",
+  "version": "1.0.2",
+  "manifest_version": 2,
   "description": "__MSG_fulmo_description__",
   "options_page": "settings.html",
-  "background_page": "background.html",
+  "background": { "page": "background.html" },
   "icons": {
       "128": "images/icon128.png",
       "48":  "images/icon48.png",
@@ -13,7 +14,7 @@
   "browser_action": {
     "default_icon": "images/icon19.png",
     "default_title": "__MSG_fulmo_menu_title__",
-    "popup": "popup.html"
+    "default_popup": "popup.html"
   },
   "content_scripts": [
     {

@@ -1709,3 +1709,13 @@ var screenshotSenderEditor = function(EII) {
     }
 
 };
+
+
+jQuery(document).ready(function($) {
+    $('a').attr('href', 'javascript:void(0)');
+    $('#tool-bar a').each(function() {
+        if (this.getAttribute('draggable') === null) {
+            this.setAttribute('draggable', 'false');
+        }
+    });
+});
