@@ -61,16 +61,15 @@ var screenshotSenderLocalFile = {
         callbackDataURL(function(uri) {
             var blob = getBlobFromDataURL(uri);
             var href = URL.createObjectURL(blob);
-            var anchor = document.createElement('a');
-            anchor.href = href;
-            anchor.setAttribute('download', filename);
             try {
+                var anchor = document.createElement('a');
+                anchor.href = href;
+                anchor.setAttribute('download', filename);
                 anchor.click();
             }
             finally {
-                URL.revokeObjectURL(href);
-                anchor.href = '';
-                anchor.removeAttribute('download');
+                setTimeout(function() { URL.revokeObjectURL(href) },
+                           600 * 1000);
             }
         });
     }
