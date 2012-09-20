@@ -763,11 +763,11 @@ var screenshotSenderPrimitiveLine = function (base, ctrlCtx, cvWidth, cvHeight, 
         _started = false;
         _moved = false;
         if (lineType == 'none') {
-            $('#ctrl-canvas').css('cursor', 'url(css/images/cursor/line.png), default');
+            $('#ctrl-canvas').css('cursor', 'url(css/images/cursor/line.cur) 15 15, auto');
         } else if (lineType == 'end-arrow') {
-            $('#ctrl-canvas').css('cursor', 'url(css/images/cursor/arrow.png), default');
+            $('#ctrl-canvas').css('cursor', 'url(css/images/cursor/arrow.cur) 15 15, auto');
         } else if (lineType == 'both-arrow') {
-            $('#ctrl-canvas').css('cursor', 'url(css/images/cursor/both-arrow.png), default');
+            $('#ctrl-canvas').css('cursor', 'url(css/images/cursor/both-arrow.cur) 15 15, auto');
         }
     };
     this.mouseDown = function(ev) {
