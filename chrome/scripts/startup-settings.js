@@ -152,33 +152,53 @@ var settingInterfaceImplementation = {
 screenshotSenderSettings = new ScreenshotSenderSettings(settingInterfaceImplementation);
 
 $(function() {
+    var _dirty = false;
 
-    $('#screenshot-sender-account-add-button').click(screenshotSenderSettings.addAccount);
-    $('#screenshot-sender-account-copy-button').click(screenshotSenderSettings.copyAccount);
-    $('#screenshot-sender-account-delete-button').click(screenshotSenderSettings.deleteAccount);
-    $('#screenshot-sender-account-set-default-button').click(screenshotSenderSettings.setDefaultAccount);
+    $.each({'#screenshot-sender-account-add-button': 'addAccount',
+            '#screenshot-sender-account-copy-button': 'copyAccount',
+            '#screenshot-sender-account-delete-button': 'deleteAccount',
+            '#screenshot-sender-account-set-default-button': 'setDefaultAccount'},
+    function(idx, val) {
+        var listener = screenshotSenderSettings[val];
+        $(idx).click(function() {
+            _dirty = true;
+            listener.call(screenshotSenderSettings);
+        });
+    });
+
     $('#screenshot-sender-account-test-button').click(screenshotSenderSettings.goTest);
 
     $('#screenshot-sender-account-list').change(screenshotSenderSettings.onSelectAccount);
     $('#screenshot-sender-account-name').change(function() {
+        _dirty = true;
         screenshotSenderSettings.onChange();
         screenshotSenderSettings.onChangeName();
     });
-    $('#screenshot-sender-account-name').keyup(function() {
-        screenshotSenderSettings.onChangeName();
+
+    $.each({'#screenshot-sender-account-name': 'keyup',
+            '#screenshot-sender-account-name': 'paste',
+            '#screenshot-sender-account-name': 'cut'}, function(idx, val)
+    {
+        $(idx).bind(val, function() {
+            _dirty = true;
+            screenshotSenderSettings.onChangeName();
+        });
     });
-    $('#screenshot-sender-account-name').bind('paste', function() {
-        screenshotSenderSettings.onChangeName();
+
+    $(['#screenshot-sender-account-url',
+       '#screenshot-sender-account-site-type',
+       '#screenshot-sender-account-user-id',
+       '#screenshot-sender-account-password'].join(', ')).change(function()
+    {
+        _dirty = true;
+        screenshotSenderSettings.onChange();
     });
-    $('#screenshot-sender-account-name').bind('cut', function() { // 動かない？
-        screenshotSenderSettings.onChangeName();
+    $('#screenshot-sender-context-menu-list').change(function() { _dirty = true });
+
+    $('#screenshot-sender-ok').click(function() {
+        _dirty = false;
+        screenshotSenderSettings.ok();
     });
-    $('#screenshot-sender-account-url').change(screenshotSenderSettings.onChange);
-    $('#screenshot-sender-account-site-type').change(screenshotSenderSettings.onChange);
-    $('#screenshot-sender-account-auth-type').change(screenshotSenderSettings.onChange);
-    $('#screenshot-sender-account-user-id').change(screenshotSenderSettings.onChange);
-    $('#screenshot-sender-account-password').change(screenshotSenderSettings.onChange);
-    $('#screenshot-sender-ok').click(screenshotSenderSettings.ok);
     $('#screenshot-sender-cancel').click(screenshotSenderSettings.cancel);
 
     $('.i18n').each(function() {
@@ -205,4 +225,13 @@ $(function() {
         width: 320
     });
     screenshotSenderSettings.init();
+
+    var beforeunload = false;
+    $(window).bind('beforeunload', function(ev) {
+        if (_dirty && beforeunload === false) {
+            beforeunload = true;
+            setTimeout(function() { beforeunload = false }, 100);
+            return ' ';
+        }
+    });
 }, false);
