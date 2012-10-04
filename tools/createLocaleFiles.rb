@@ -79,7 +79,7 @@ class CreateLocaleFiles
                 end
             end
             fp.puts sprintf(' "%s": {' , key)
-            fp.puts sprintf('  "message": "%s"', message.gsub(/\n/, '\n').gsub(/\t/, '\t').gsub(/\"/, '\"'))
+            fp.puts sprintf('  "message": "%s"', message.gsub(/\$/, '$$').gsub(/\n/, '\n').gsub(/\t/, '\t').gsub(/\"/, '\"'))
             if i != messages.length - 1
                 fp.puts " },"
             else 
