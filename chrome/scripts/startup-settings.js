@@ -187,6 +187,7 @@ $(function() {
 
     $(['#screenshot-sender-account-url',
        '#screenshot-sender-account-site-type',
+       '#screenshot-sender-account-auth-type',
        '#screenshot-sender-account-user-id',
        '#screenshot-sender-account-password'].join(', ')).change(function()
     {
