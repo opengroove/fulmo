@@ -3,7 +3,6 @@
 <!DOCTYPE dialog SYSTEM "chrome://fulmo/locale/screenshot_sender.dtd">
 <dialog id="pref" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
   title="&fulmo_setting_title;" ondialogaccept="return screenshotSenderSettings.ok()">
-  <script type="text/javascript" src="scripts/libs/xmlrpc_lib.js" />
   <script type="text/javascript" src="scripts/bts-driver/trac.js" ></script>
   <script type="text/javascript" src="scripts/bts-driver/ciklone.js" ></script>
   <script type="text/javascript" src="scripts/bts-driver/redmine.js" ></script>

@@ -903,7 +903,8 @@ fulmo_bts_driver_redmine.prototype = {
         var client = new FulmoXMLHttpRequest();
 
         if (p.imageParams) {
-            var data = base64_decode(p.imageParams[0].substr('data:image/png;base64,'.length));
+            var data = p.imageParams[0].replace(/^data:image\/png;base64,/, '');
+            data = atob(data);
             var url = p.loginProperties.baseUrl + 'uploads.xml';
             if (p.loginProperties.account.authType == 'none') {
                 client.open('POST', url, true);
@@ -925,6 +926,6 @@ fulmo_bts_driver_redmine.prototype = {
         } else {
             uploadTicket(null);
         }
-    },
+    }
 
 };

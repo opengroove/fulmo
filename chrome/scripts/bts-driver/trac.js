@@ -29,28 +29,75 @@
 function fulmo_bts_driver_trac(){}
 fulmo_bts_driver_trac.prototype = {
 
-    /*** 
+    /***
      * 設定画面のBTS選択画面に表示するラベル
      */
     label: 'Trac',
 
     icon: 'trac.png',
 
-    _normalizationPath: function(account) {
-        path = account.path;
-        url = account.url;
-        if (path.charAt(path.length - 1) != '/') {
-            url += '/';
-            path += '/';
+    _normalizePath: function(account) {
+        var path = account.path;
+        var url = account.url;
+        var append = [];
+        if (url.slice(-1) != '/') {
+            append.push('/');
         }
-        if (account.authType == '0' || account.authType == 'none') { // no password
-            path += 'rpc';
-            url += 'rpc';
-        } else {
-            path += 'login/rpc';
-            url += 'login/rpc';
+        append.push(account.authType == '0' || account.authType == 'none' ?
+                    'jsonrpc' : 'login/jsonrpc');
+        append = append.join('');
+        return {path: path + append, url: url + append};
+    },
+
+    _createClient: function(account) {
+        var url = this._normalizePath(account).url;
+        var username = account.userId;
+        var password = account.password;
+        var client = new FulmoXMLHttpRequest();
+        if (account.authType == '0' || account.authType == 'none') {
+            client.open('POST', url, true);
         }
-        return {path: path, url: url};
+        else {
+            client.open('POST', url, true, username, password);
+        }
+        client.setRequestHeader('Content-Type', 'application/json');
+        return client;
+    },
+
+    _sendRequest: function(account, options) {
+        var data = {method: options.method};
+        if ('params' in options) {
+            data.params = options.params;
+        }
+        data = JSON.stringify(data);
+        var success = options.success || function() {};
+        var error = options.error || function(xhr) {
+            alert(xhr.status + ' ' + xhr.statusText);
+        };
+        var timer = setTimeout(function() { client.abort(); },
+                               (options.timeout || 30) * 1000);
+        var callback = function() {
+            clearTimeout(timer);
+            timer = undefined;
+            var status = client.status;
+            if (status >= 200 && status < 300) {
+                var data;
+                try {
+                    data = JSON.parse(client.responseText);
+                }
+                catch (e) {
+                    data = undefined;
+                }
+                if (data !== undefined) {
+                    success(data);
+                    return;
+                }
+            }
+            error(client);
+        };
+        var client = this._createClient(account);
+        client.send(data, callback);
+        xmlHttpRequestCredential.cleanup();
     },
 
     /***
@@ -75,20 +122,27 @@ fulmo_bts_driver_trac.prototype = {
         設定画面でログインテストを行う時に呼ばれる関数です。ドライバはサーバーに接続し、与えられた認証パラメータで認証を行い、その結果を返す必要があります。
      */
     loginTest: function(p) {
-        var normParam = this._normalizationPath(p.account);
-        var msg = new xmlrpcmsg('system.getAPIVersion');
-        xmlHttpRequestCredential.cleanup();
-        var client = new xmlrpc_client(normParam.path, p.account.host, p.account.port, p.account.protocol);
-        if (p.account.authType != 'none') {
-            client.setCredentials(p.account.userId, p.account.password, 0);
-        }
-        client.send(msg, 180, function(res){
-            if (res.faultCode()) {
-                p.error(p.formatString('fulmo_test_message_failed', [normParam.url, res.faultString()]));
-            } else {
-                p.success(p.formatString('fulmo_test_message_succeeded', [normParam.url ,res.val.me[0].me, res.val.me[1].me, res.val.me[2].me]));
+        var url = this._normalizePath(p.account).url;
+        var options = {};
+        options.method = 'system.getAPIVersion';
+        options.timeout = 180;
+        options.success = function(data) {
+            var error = data.error;
+            if (!error) {
+                var result = data.result;
+                p.success(p.formatString('fulmo_test_message_succeeded',
+                                         [url, result[0], result[1], result[2]]));
             }
-        });
+            else {
+                p.error(p.formatString('fulmo_test_message_failed',
+                                       [url, error.message]));
+            }
+        };
+        options.error = function(xhr) {
+            var msg = xhr.status + ' ' + xhr.statusText;
+            p.error(p.formatString('fulmo_test_message_failed', [url, msg]));
+        };
+        this._sendRequest(p.account, options);
     },
 
     /**
@@ -129,18 +183,19 @@ fulmo_bts_driver_trac.prototype = {
      */
     loginAndGetFields: function(idPrefix, p, resetup) {
         $('#property-block').html('');
-        var normParam = this._normalizationPath(p.account);
-        xmlHttpRequestCredential.cleanup();
-        client = new xmlrpc_client(normParam.path, p.account.host, p.account.port, p.account.protocol);
-        if (p.account.authType != 'none') client.setCredentials(p.account.userId, p.account.password, 0);
-
-        client.send(new xmlrpcmsg('ticket.getTicketFields'), 30, function(res){
-            if (res.faultCode()) {
-                p.error(res.faultString());
-                return;
+        var options = {};
+        options.method = 'ticket.getTicketFields';
+        options.success = function(data) {
+            var error = data.error;
+            if (!error) {
+                var result = data.result;
+                p.success({account: p.account, val: result});
             }
-            p.success({client: client, url: p.account.url, val: res.val.me});
-        });
+            else {
+                p.error(error.message);
+            }
+        };
+        this._sendRequest(p.account, options);
     },
 
     /**
@@ -156,20 +211,20 @@ fulmo_bts_driver_trac.prototype = {
     createProperty: function(idPrefix, p) {
         var val = p.val;
         function v(val, name) {
-            return val.me[name] ? val.me[name].me : null;
+            return name in val ? val[name] : null;
         }
         function createElement(target, val) {
 
             var createInput = {
                 'text': function(val) {
                     var inp = $('<input>');
-                    if (val.value) inp.val(val.value.me);
+                    if (val.value) inp.val(val.value);
                     inp.attr('id', idPrefix + name);
                     inp.addClass('screenshot-sender-property');
                     var label = $('<label>');
                     label.addClass('screenshot-sender-properties-label');
                     label.attr('for', idPrefix + name);
-                    label.text(val.label.me + ': ');
+                    label.text(val.label + ': ');
                     label.append(inp);
                     var span = $('<span>');
                     span.append(label);
@@ -178,26 +233,26 @@ fulmo_bts_driver_trac.prototype = {
                 },
                 'select': function(val) {
                     var sel = $('<select>');
-                    if (val.optional && val.optional.me) {
+                    if (val.optional && val.optional) {
                         sel.append($('<option>'));
                     }
                     if (val.options) {
-                        for (var i = 0; i < val.options.me.length; i++) {
+                        for (var i = 0; i < val.options.length; i++) {
                             var opt = $('<option>');
-                            opt.text(val.options.me[i].me);
-                            opt.val(val.options.me[i].me);
+                            opt.text(val.options[i]);
+                            opt.val(val.options[i]);
                             sel.append(opt);
                         }
                     }
                     if (val.value) {
-                        sel.val(val.value.me);
+                        sel.val(val.value);
                     }
                     sel.attr('id', idPrefix + name);
                     sel.addClass('screenshot-sender-property');
                     var label = $('<label>');
                     label.addClass('screenshot-sender-properties-label');
                     label.attr('for', idPrefix + name);
-                    label.text(val.label.me + ': ');
+                    label.text(val.label + ': ');
                     var span = $('<span>');
                     span.append(label);
                     span.append(sel);
@@ -205,14 +260,14 @@ fulmo_bts_driver_trac.prototype = {
                 },
                 'checkbox': function(val) {
                     var inp = $('<input>');
-                    if (val.value) inp.val(val.value.me);
+                    if (val.value) inp.val(val.value);
                     inp.attr('id', idPrefix + name);
                     inp.attr('type', 'checkbox');
                     inp.addClass('screenshot-sender-property');
                     var label = $('<label>');
                     label.addClass('screenshot-sender-properties-label');
                     label.attr('for', idPrefix + name);
-                    label.text(val.label.me + ': ');
+                    label.text(val.label + ': ');
                     label.append(inp);
                     var span = $('<span>');
                     span.append(label);
@@ -223,23 +278,23 @@ fulmo_bts_driver_trac.prototype = {
                     if (!val.options) return false;
                     var span = $('<span>');
                     var glabel = $('<span>');
-                    glabel.text(val.label.me + ': ');
+                    glabel.text(val.label + ': ');
                     glabel.addClass('screenshot-sender-properties-label');
                     span.append(glabel);
-                    var def = val.value ? val.value.me : null;
+                    var def = val.value || null;
                     var wrap = $('<span>');
                     wrap.addClass('screenshot-sender-property');
                     wrap.attr('id', idPrefix + name);
-                    for (var i = 0; i < val.options.me.length; i++) {
+                    for (var i = 0; i < val.options.length; i++) {
                         var label = $('<label>');
                         label.addClass('screenshot-sender-radio-label');
-                        label.text(val.options.me[i].me);
+                        label.text(val.options[i]);
                         var inp = $('<input>');
                         inp.attr('name', idPrefix + name);
                         inp.attr('id', idPrefix + name + '-' + i);
                         inp.attr('type', 'radio');
-                        inp.val(val.options.me[i].me);
-                        if (val.options.me[i].me == def) inp.attr('checked', 'checked');
+                        inp.val(val.options[i]);
+                        if (val.options[i] == def) inp.attr('checked', 'checked');
                         label.prepend(inp);
                         wrap.append(label);
                     }
@@ -248,15 +303,15 @@ fulmo_bts_driver_trac.prototype = {
                 },
                 'textarea': function(val) {
                     var inp = $('<textarea>');
-                    if (val.value) inp.text(val.value.me);
+                    if (val.value) inp.text(val.value);
                     inp.attr('id', idPrefix + name);
                     inp.addClass('screenshot-sender-property');
-                    if (val.width) inp.attr('cols', val.width.me);
-                    if (val.height) inp.attr('rows', val.height.me);
+                    if (val.width) inp.attr('cols', val.width);
+                    if (val.height) inp.attr('rows', val.height);
                     var label = $('<label>');
                     label.addClass('screenshot-sender-properties-label');
                     label.attr('for', idPrefix + name);
-                    label.text(val.label.me + ': ');
+                    label.text(val.label + ': ');
                     label.append(inp);
                     var span = $('<span>');
                     span.append(label);
@@ -265,8 +320,8 @@ fulmo_bts_driver_trac.prototype = {
                 }
             };
 
-            var name = val.name.me;
-            var type = val.type.me;
+            var name = val.name;
+            var type = val.type;
             if (!createInput[type]) type = 'text';
             var li = $('<li>');
             var inp = createInput[type](val);
@@ -276,7 +331,7 @@ fulmo_bts_driver_trac.prototype = {
             }
         }
 
-        var ignore = [  'status', 'resolution', 'time', 'changetime', 'sumarry', 'reporter', 'description' ]
+        var ignore = [  'status', 'resolution', 'time', 'changetime', 'sumarry', 'reporter', 'description' ];
         var topStandardParams = {
             'type': null,
             'priority': null,
@@ -287,46 +342,45 @@ fulmo_bts_driver_trac.prototype = {
             'keywords': null,
             'cc': null
         };
-        var bottomStandardParams = {
-            'owner': null
-        }
+        var bottomStandardParams = {owner: null};
         var customParams = [];
-        for (var i = 0; i < val.length; i++) {
+        var i;
+        for (i = 0; i < val.length; i++) {
             var name = v(val[i], 'name');
             if (ignore.indexOf(name) != -1) continue;
             if (topStandardParams[name] === null) {
-                topStandardParams[name] = val[i].me;
+                topStandardParams[name] = val[i];
             } else if (bottomStandardParams[name] === null) {
-                bottomStandardParams[name] = val[i].me;
+                bottomStandardParams[name] = val[i];
             } else {
                 var order = '' + v(val[i], 'order');
                 if (!order) order = 0;
                 if (!customParams[order]) customParams[order] = [];
-                customParams[order].push(val[i].me);
+                customParams[order].push(val[i]);
             }
         }
         var target = $('#screenshot-sender-property-list');
         target.html('');
-        for (var i in topStandardParams) {
+        for (i in topStandardParams) {
             if (topStandardParams[i] !== null) {
                 createElement(target, topStandardParams[i]);
             }
         }
-        for (var i = 0; i < customParams.length; i++) {
+        for (i = 0; i < customParams.length; i++) {
             if (customParams[i]) {
                 for (var j = 0; j < customParams[i].length; j++) {
                     createElement(target, customParams[i][j]);
                 }
             }
         }
-        for (var i in bottomStandardParams) {
+        for (i in bottomStandardParams) {
             if (bottomStandardParams[i] !== null) {
                 createElement(target, bottomStandardParams[i]);
             }
         }
     },
 
-    /*** 
+    /***
      * チケットをサーバーに送信する
        @param {hash} loginProperties loginAndGetFields() 関数が success() 関数で返した、パラメータ情報
        @param {string} sumarry タイトル
@@ -341,55 +395,55 @@ fulmo_bts_driver_trac.prototype = {
        @param {function} success: 成功時に呼ばれる関数オブジェクト。success()はひとつの引数を取り、WEBサイトのチケットのページのURLを返す
        @param {function} error: 失敗時に呼ばれる関数オブジェクト。success()はひとつの引数を取り、失敗時のメッセージを渡す
        @detail
-        
      */
     send: function(p) {
-        var msg = new xmlrpcmsg('ticket.create');
-        msg.addParam(new xmlrpcval(p.sumarry));
+        var self = this;
+        var account = p.loginProperties.account;
+        var params = [];
+        params.push(p.sumarry);
         var desc = p.description;
         if (p.imageParams) {
-            desc += '\n\n[[Image(' + p.imageFileName;
-            desc += p.imageParams[1] > 320 ? ',320px)]]' : ')]]';
+            desc += '\n\n[[Image(' + p.imageFileName +
+                    (p.imageParams[1] > 320 ? ',320px)]]' : ')]]');
         }
-        msg.addParam(new xmlrpcval(desc));
-        var _attr = {
-            reporter: new xmlrpcval(p.reporter)
-        }
-        for (id in p.attributes) {
-            _attr[id] = new xmlrpcval(p.attributes[id]);
-        }
-        var attr = new xmlrpcval();
-        attr.addStruct(_attr);
-        msg.addParam(attr);
-        msg.addParam(new xmlrpcval(true, 'boolean'));   // notify parameter
-        p.loginProperties.client.send(msg, 30, function(res) {
-            if (res.faultCode()) {
-                p.error(res.faultString());
+        params.push(desc);
+        params.push($.extend({reporter: p.reporter}, p.attributes));
+        params.push(true);      // notify parameter
+
+        var options = {method: 'ticket.create', params: params};
+        options.success = function(data) {
+            var error = data.error;
+            if (error) {
+                p.error(error.message);
                 return;
             }
-            var no = res.val.me;
-            var url = p.loginProperties.url;
-            if (url.charAt(url.length - 1) != '/') url += '/';
-            url += 'ticket/' + no;
+            var tktid = data.result;
+            var url = account.url;
+            if (url.slice(-1) != '/')
+                url += '/';
+            url += 'ticket/' + tktid;
 
             if (p.imageParams) {
-                var desc = '';
-                var data = base64_decode(p.imageParams[0].substr('data:image/png;base64,'.length));
-                var msg = new xmlrpcmsg('ticket.putAttachment');
-                msg.addParam(new xmlrpcval(no, 'int'));
-                msg.addParam(new xmlrpcval(p.imageFileName));
-                msg.addParam(new xmlrpcval(desc));
-                msg.addParam(new xmlrpcval(data, 'base64'));
-                p.loginProperties.client.send(msg, 30, function(res) {
-                    if (res.faultCode()) {
-                        p.error(res.faultString());
-                        return;
-                    }
-                    p.success(url);
-                });
-            } else {
+                var b64image = p.imageParams[0];
+                b64image = b64image.replace(/^data:image\/png;base64,/, '');
+                var params = [tktid,
+                              p.imageFileName,
+                              null,  // description for the attachment
+                              {'__jsonclass__': ['binary', b64image]}];
+                var options = {method: 'ticket.putAttachment', params: params};
+                options.success = function(data) {
+                    var error = data.error;
+                    if (error)
+                        p.error(error.message);
+                    else
+                        p.success(url);
+                };
+                self._sendRequest(account, options);
+            }
+            else {
                 p.success(url);
             }
-        });
+        };
+        this._sendRequest(account, options);
     }
 };
