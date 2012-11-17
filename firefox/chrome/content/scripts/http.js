@@ -26,7 +26,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-var xmlHttpRequestCredential = new function() {
+(function(fulmo) {
+
+fulmo.xmlHttpRequestCredential = new function() {
     var _isProxy = false;
     var _challenge = null;
     var _authType = '';
@@ -66,8 +68,7 @@ var xmlHttpRequestCredential = new function() {
     }
 };
 
-var FulmoXMLHttpRequestBackup = XMLHttpRequest;
-var FulmoXMLHttpRequest = function() {
+fulmo.FulmoXMLHttpRequest = function() {
     var _channel;
     var _url;
     var _host;
@@ -189,7 +190,7 @@ var FulmoXMLHttpRequest = function() {
                 default:
                     throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
             }
-            xmlHttpRequestCredential.setup(authType, isProxy, challenges);
+            fulmo.xmlHttpRequestCredential.setup(authType, isProxy, challenges);
 
             _authCallback = function () {
                 _channel = setupChannel(_requestText);
@@ -284,9 +285,11 @@ var FulmoXMLHttpRequest = function() {
         httpChannel.setRequestHeader('Content-Length', data.length, true);
         httpChannel.requestMethod = _method;
 
-        if (xmlHttpRequestCredential.usable()) {
-            xmlHttpRequestCredential.createHeader(channel, _host, _url, _user, _password);
+        if (fulmo.xmlHttpRequestCredential.usable()) {
+            fulmo.xmlHttpRequestCredential.createHeader(channel, _host, _url, _user, _password);
         }
         return channel;
     }
-}
+};
+
+})(fulmo);

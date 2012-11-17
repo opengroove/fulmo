@@ -26,7 +26,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-var ScreenshotSenderSettings = function(SII /* settingInterfaceImplementation */) {
+(function(fulmo) {
+
+fulmo.Settings = function(SII /* settingInterfaceImplementation */) {
     var settings = null;
     var currentId = -1;
     var updated = false;
@@ -35,7 +37,7 @@ var ScreenshotSenderSettings = function(SII /* settingInterfaceImplementation */
     var urlRegex = new RegExp('^(https?)://([^:/]+)((:([0-9]+))?)(/.*)?$');
 
     this.init = function() {
-        settings = fulmoSettingsManager.load();
+        settings = fulmo.settingsManager.load();
         if (!settings.accounts) {
             settings.accounts = [];
         }
@@ -328,7 +330,7 @@ var ScreenshotSenderSettings = function(SII /* settingInterfaceImplementation */
             if (!validateCurrentAccount()) return false;
             settings.accounts[getSettingPos(currentId)] = getCurrentAccount(false);
         }
-        fulmoSettingsManager.save(settings);
+        fulmo.settingsManager.save(settings);
         SII.setupContextMenu(settings.contextMenu);
         SII.closeWindow();
         return true;
@@ -343,7 +345,7 @@ var ScreenshotSenderSettings = function(SII /* settingInterfaceImplementation */
 
         function testStart() {
             SII.testStart();
-            fulmo_bts_drivers[account.siteType].loginTest({
+            fulmo.bts_drivers[account.siteType].loginTest({
                 account: account,
                 formatString: SII.getFormattedString,
                 success: function(message) {
@@ -377,3 +379,5 @@ var ScreenshotSenderSettings = function(SII /* settingInterfaceImplementation */
     }
 
 };
+
+})(fulmo);

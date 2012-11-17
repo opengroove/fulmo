@@ -26,14 +26,16 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-function fulmo_bts_driver_redmine(){}
-fulmo_bts_driver_redmine.prototype = {
+(function(fulmo) {
+
+function driver(){}
+driver.prototype = {
 
     /*** 
      * 設定画面のBTS選択画面に表示するラベル
      */
+    name: 'redmine',
     label: 'Redmine',
-
     icon: 'redmine.png',
 
     _normalizationPath: function(account) {
@@ -103,8 +105,8 @@ fulmo_bts_driver_redmine.prototype = {
             p.error(p.formatString('fulmo_redmine_test_message_url_invalid', []));
             return;
         }
-        xmlHttpRequestCredential.cleanup();
-        var client = new FulmoXMLHttpRequest();
+        fulmo.xmlHttpRequestCredential.cleanup();
+        var client = new fulmo.FulmoXMLHttpRequest();
         var projectUrl = normParam.url;
         var tmp = projectUrl.split('/');
         tmp.pop();
@@ -180,8 +182,8 @@ fulmo_bts_driver_redmine.prototype = {
             p.error(p.formatString('fulmo_redmine_test_message_url_invalid', []));
             return;
         }
-        xmlHttpRequestCredential.cleanup();
-        var client = new FulmoXMLHttpRequest();
+        fulmo.xmlHttpRequestCredential.cleanup();
+        var client = new fulmo.FulmoXMLHttpRequest();
         var projectUrl = normParam.url;
         var tmp = projectUrl.split('/');
         tmp.pop();
@@ -394,8 +396,8 @@ fulmo_bts_driver_redmine.prototype = {
             p.error(p.formatString('fulmo_redmine_test_message_url_invalid', []));
             return;
         }
-        xmlHttpRequestCredential.cleanup();
-        var client = new FulmoXMLHttpRequest();
+        fulmo.xmlHttpRequestCredential.cleanup();
+        var client = new fulmo.FulmoXMLHttpRequest();
         var projectUrl = normParam.url;
         var tmp = projectUrl.split('/');
         tmp.pop();
@@ -900,7 +902,7 @@ fulmo_bts_driver_redmine.prototype = {
             });
         }
 
-        var client = new FulmoXMLHttpRequest();
+        var client = new fulmo.FulmoXMLHttpRequest();
 
         if (p.imageParams) {
             var data = p.imageParams[0].replace(/^data:image\/png;base64,/, '');
@@ -929,3 +931,7 @@ fulmo_bts_driver_redmine.prototype = {
     }
 
 };
+
+fulmo.bts_driver_redmine = driver;
+
+})(fulmo);

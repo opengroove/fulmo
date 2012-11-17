@@ -26,7 +26,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-function contentInterfaceImplementation(w) {
+(function(fulmo) {
+
+var impl = new (function contentInterfaceImplementation(w) {
     var settingsDialog = null;
     var settingsDialog_bk = null;
 
@@ -45,7 +47,7 @@ function contentInterfaceImplementation(w) {
         window.open('chrome://fulmo/content/editor.html', '_blank', 'resizable,centerscreen,scrollbars');
     }
     this.loadSettings = function(func) {
-        var settings = fulmoSettingsManager.load();
+        var settings = fulmo.settingsManager.load();
         func(settings);
     }
     this.getString = function(tag) {
@@ -92,7 +94,7 @@ function contentInterfaceImplementation(w) {
             if (labelMode)
                 label = o.getString('fulmo_name') + ' - ' + label;
             icon = 'chrome://fulmo/skin/images/' + icon;
-            var command = function() { screenshotSender.goSend(arg) };
+            var command = function() { fulmo.sender.goSend(arg) };
             var item = w.document.createElement('menuitem');
             item.className = 'menuitem-iconic screenshot-sender-menu-item';
             item.setAttribute('label', label);
@@ -126,14 +128,14 @@ function contentInterfaceImplementation(w) {
             }
         }
     }
-}
-
-var screenshotSenderCII = new contentInterfaceImplementation(window);
-var screenshotSender = new ScreenshotSender(function(){return window.content;}, screenshotSenderCII);
+})(window);
 
 window.addEventListener('load', function() {
-    screenshotSenderCII.loadSettings(function(settings) {
-        screenshotSenderCII.setupContextMenu(settings.contextMenu);
+    impl.loadSettings(function(settings) {
+        impl.setupContextMenu(settings.contextMenu);
     });
 }, false);
 
+fulmo.sender = new fulmo.Sender(function(){return window.content;}, impl);
+
+})(fulmo);

@@ -2,6 +2,7 @@
 <?xml-stylesheet href="chrome://fulmo/skin/style.css" type="text/css"?> 
 <!DOCTYPE dialog SYSTEM "chrome://fulmo/locale/screenshot_sender.dtd">
 <overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <script type="application/x-javascript" src="chrome://fulmo/content/scripts/init.js" />
   <script type="application/x-javascript" src="chrome://fulmo/content/scripts/screenshot-sender.js" />
   <script type="application/x-javascript" src="chrome://fulmo/content/scripts/settings-manager.js" />
   <script type="application/x-javascript" src="chrome://fulmo/content/scripts/startup.js" />
@@ -9,20 +10,20 @@
     <stringbundle id="screenshot-sender-strings" src="chrome://fulmo/locale/screenshot_sender.properties"/>
   </stringbundleset>
   <toolbarpalette id="BrowserToolbarPalette">
-    <toolbarbutton id="screenshot-sender-button" type="menu-button" oncommand="screenshotSender.defaultCommand()"
+    <toolbarbutton id="screenshot-sender-button" type="menu-button" oncommand="fulmo.sender.defaultCommand()"
       label="&fulmo_name;" tooltiptext="&fulmo_name;" oncommandupdate="" class="toolbarbutton-1 chromeclass-toolbar-additional" >
         <menupopup onpopupshowing="">
           <menuitem class="menuitem-iconic" image="chrome://fulmo/skin/images/get_document.png" 
-            label="&fulmo_action_all_send;" oncommand="screenshotSender.goSend(0)" />
+            label="&fulmo_action_all_send;" oncommand="fulmo.sender.goSend(0)" />
           <menuitem class="menuitem-iconic" image="chrome://fulmo/skin/images/get_window.png" 
-            label="&fulmo_action_view_send;" oncommand="screenshotSender.goSend(10)" />
+            label="&fulmo_action_view_send;" oncommand="fulmo.sender.goSend(10)" />
           <menuitem class="menuitem-iconic" image="chrome://fulmo/skin/images/get_selected_area.png" 
-            label="&fulmo_action_parts_send;" oncommand="screenshotSender.goSend(20)" />
+            label="&fulmo_action_parts_send;" oncommand="fulmo.sender.goSend(20)" />
           <menuitem class="menuitem-iconic" image="chrome://fulmo/skin/images/create_ticket.png" 
-            label="&fulmo_action_no_image_send;" oncommand="screenshotSender.goSend(30)" />
+            label="&fulmo_action_no_image_send;" oncommand="fulmo.sender.goSend(30)" />
           <menuseparator/>
           <menuitem class="menuitem-iconic" image="chrome://fulmo/skin/images/settings.png" 
-            label="&fulmo_action_setting;" oncommand="screenshotSender.settings()" />
+            label="&fulmo_action_setting;" oncommand="fulmo.sender.settings()" />
         </menupopup>
     </toolbarbutton>
   </toolbarpalette>

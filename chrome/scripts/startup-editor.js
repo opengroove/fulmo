@@ -26,7 +26,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-$(function() {
+(function(fulmo) {
+jQuery(document).ready(function($) {
 
     var editorInterfaceImplementation = {
         getString: function(tag) {
@@ -40,11 +41,10 @@ $(function() {
             }
         },
         getImageParams:  function() {
-            var p= window.opener.imageParams;
-            return p;
+            return window.opener[fulmo.key].imageParams;
         },
         returnToMain: function(imageUrl, dirty) {
-            window.opener.imageParams[0] = imageUrl;
+            window.opener[fulmo.key].imageParams[0] = imageUrl;
             var dirty_str = dirty ? '#dirty=1' : '';
             location.href = 'main.html' + dirty_str;
         },
@@ -57,8 +57,12 @@ $(function() {
             */
         },
         showImageDialog: function(message, filename, callbackDataURL) {
-            screenshotSenderLocalFile.saveImage(message, filename, callbackDataURL);
+            fulmo.localFile.saveImage(message, filename, callbackDataURL);
         }
     };
-    screenshotSenderEditor(editorInterfaceImplementation);
+    jQuery(document).ready(function() {
+        fulmo.editor(editorInterfaceImplementation);
+    });
+
 });
+})(fulmo);

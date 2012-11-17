@@ -26,10 +26,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+(function(fulmo) {
+
 // 選択
 // 選択コマンドは実際にはプリミティブではないので特殊な実装になっている
 // 新プリミティブ作成の参考にするべきではない
-var screenshotSenderPrimitiveSel = function (base, ctrlCtx, cvWidth, cvHeight) {
+var primitiveSel = function (base, ctrlCtx, cvWidth, cvHeight) {
     var _layers;
     var _last;
     var _mode = 'none';
@@ -302,7 +304,7 @@ var screenshotSenderPrimitiveSel = function (base, ctrlCtx, cvWidth, cvHeight) {
 };
 
 // ぼかし
-var screenshotSenderPrimitiveEdit = function (base, ctrlCtx, cvWidth, cvHeight) {
+var primitiveEdit = function (base, ctrlCtx, cvWidth, cvHeight) {
 
     var _this = this;
     var _x0, _y0, _x1, _y1;
@@ -420,7 +422,7 @@ var screenshotSenderPrimitiveEdit = function (base, ctrlCtx, cvWidth, cvHeight) 
 
 
 // 多角形
-var screenshotSenderPrimitivePoly = function (base, ctrlCtx, cvWidth, cvHeight) {
+var primitivePoly = function (base, ctrlCtx, cvWidth, cvHeight) {
     var _this = this;
     var _x0, _y0, _x1, _y1;
     var _started = false; // 始点が設定されたら真になる
@@ -545,7 +547,7 @@ var screenshotSenderPrimitivePoly = function (base, ctrlCtx, cvWidth, cvHeight) 
 };
 
 // テキスト
-var screenshotSenderPrimitiveText = function (base, ctrlCtx, cvWidth, cvHeight) {
+var primitiveText = function (base, ctrlCtx, cvWidth, cvHeight) {
     var _this = this;
     var _mode;
     var _width = 200;
@@ -751,7 +753,7 @@ var screenshotSenderPrimitiveText = function (base, ctrlCtx, cvWidth, cvHeight) 
 };
 
 // 直線
-var screenshotSenderPrimitiveLine = function (base, ctrlCtx, cvWidth, cvHeight, lineType) {
+var primitiveLine = function (base, ctrlCtx, cvWidth, cvHeight, lineType) {
     var _this = this;
     var _x0, _y0, _x1, _y1;
     var _started = false; // 始点が設定されたら真になる
@@ -966,7 +968,7 @@ var screenshotSenderPrimitiveLine = function (base, ctrlCtx, cvWidth, cvHeight, 
 };
 
 // 自由線
-var screenshotSenderPrimitiveFree = function (base, ctrlCtx, cvWidth, cvHeight) {
+var primitiveFree = function (base, ctrlCtx, cvWidth, cvHeight) {
     var _this = this;
     var _drawn = false; // 描画が開始されたら真になる
     var _points = [];
@@ -1054,7 +1056,7 @@ var screenshotSenderPrimitiveFree = function (base, ctrlCtx, cvWidth, cvHeight) 
 };
 
 // ライブラリ
-var screenshotSenderPrimitiveLib = function (base, ctrlCtx, cvWidth, cvHeight) {
+var primitiveLib = function (base, ctrlCtx, cvWidth, cvHeight) {
     this.init = function() {
         var img = new Image();
         img.src = base.currentStamp().attr('src');
@@ -1109,7 +1111,7 @@ var screenshotSenderPrimitiveLib = function (base, ctrlCtx, cvWidth, cvHeight) {
 };
 
 // 連番
-var screenshotSenderPrimitiveNumber = function (base, ctrlCtx, cvWidth, cvHeight) {
+var primitiveNumber = function (base, ctrlCtx, cvWidth, cvHeight) {
     var _num = 1;
     var _img = new Image();
     _img.src = $('#num-bg').attr('src');
@@ -1163,7 +1165,7 @@ var screenshotSenderPrimitiveNumber = function (base, ctrlCtx, cvWidth, cvHeight
 
 
 // 追加機能のためのテンプレート
-var screenshotSenderPrimitiveTemplate = function (base, ctrlCtx, cvWidth, cvHeight) {
+var primitiveTemplate = function (base, ctrlCtx, cvWidth, cvHeight) {
     this.init = function(layer) {
     }
     this.mouseDown = function(ev) {
@@ -1198,8 +1200,7 @@ var screenshotSenderPrimitiveTemplate = function (base, ctrlCtx, cvWidth, cvHeig
 };
 
 
-var screenshotSenderEditor = function(EII) {
-
+fulmo.editor = function(EII) {
     var _currentPrimitive;
     var _currentLayer;
     var _layers = [];
@@ -1216,6 +1217,12 @@ var screenshotSenderEditor = function(EII) {
     $('.i18n-title').each(function() {
         var title = $(this).attr('title');
         $(this).attr('title', EII.getString(title));
+    });
+    $('a').attr('href', 'javascript:void(0)');
+    $('#tool-bar a').each(function() {
+        if (this.getAttribute('draggable') === null) {
+            this.setAttribute('draggable', 'false');
+        }
     });
 
     // イメージの設定
@@ -1313,17 +1320,17 @@ var screenshotSenderEditor = function(EII) {
     // ハッシュ名は mode-selector クラスを持つ<li>要素のidに紐づく
     // (プレフィックスの 'btn-' は省く)
     var _primitives = {
-        'sel'  : new screenshotSenderPrimitiveSel(this, ctrlCtx, imageParams[1], imageParams[2]),
-        'edit': new screenshotSenderPrimitiveEdit(this, ctrlCtx, imageParams[1], imageParams[2]),
-        'poly' : new screenshotSenderPrimitivePoly(this, ctrlCtx, imageParams[1], imageParams[2]),
-        'edit' : new screenshotSenderPrimitiveEdit(this, ctrlCtx, imageParams[1], imageParams[2]),
-        'text' : new screenshotSenderPrimitiveText(this, ctrlCtx, imageParams[1], imageParams[2]),
-        'line' : new screenshotSenderPrimitiveLine(this, ctrlCtx, imageParams[1], imageParams[2], 'none'),
-        'arrow' : new screenshotSenderPrimitiveLine(this, ctrlCtx, imageParams[1], imageParams[2], 'end-arrow'),
-        'both-arrow' : new screenshotSenderPrimitiveLine(this, ctrlCtx, imageParams[1], imageParams[2], 'both-arrow'),
-        'free' : new screenshotSenderPrimitiveFree(this, ctrlCtx, imageParams[1], imageParams[2]),
-        'num'  : new screenshotSenderPrimitiveNumber(this, ctrlCtx, imageParams[1], imageParams[2]),
-        'lib'  : new screenshotSenderPrimitiveLib(this, ctrlCtx, imageParams[1], imageParams[2])
+        'sel': new primitiveSel(this, ctrlCtx, imageParams[1], imageParams[2]),
+        'edit': new primitiveEdit(this, ctrlCtx, imageParams[1], imageParams[2]),
+        'poly': new primitivePoly(this, ctrlCtx, imageParams[1], imageParams[2]),
+        'edit': new primitiveEdit(this, ctrlCtx, imageParams[1], imageParams[2]),
+        'text': new primitiveText(this, ctrlCtx, imageParams[1], imageParams[2]),
+        'line': new primitiveLine(this, ctrlCtx, imageParams[1], imageParams[2], 'none'),
+        'arrow': new primitiveLine(this, ctrlCtx, imageParams[1], imageParams[2], 'end-arrow'),
+        'both-arrow': new primitiveLine(this, ctrlCtx, imageParams[1], imageParams[2], 'both-arrow'),
+        'free': new primitiveFree(this, ctrlCtx, imageParams[1], imageParams[2]),
+        'num': new primitiveNumber(this, ctrlCtx, imageParams[1], imageParams[2]),
+        'lib': new primitiveLib(this, ctrlCtx, imageParams[1], imageParams[2])
     };
 
     // イベントのハンドリング
@@ -1707,15 +1714,6 @@ var screenshotSenderEditor = function(EII) {
     this.setDirty = function(flg) {
         _dirty = flg;
     }
-
 };
 
-
-jQuery(document).ready(function($) {
-    $('a').attr('href', 'javascript:void(0)');
-    $('#tool-bar a').each(function() {
-        if (this.getAttribute('draggable') === null) {
-            this.setAttribute('draggable', 'false');
-        }
-    });
-});
+})(fulmo);

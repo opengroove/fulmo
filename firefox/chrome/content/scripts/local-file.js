@@ -26,7 +26,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-var screenshotSenderLocalFile = {
+(function(fulmo) {
+
+fulmo.localFile = {
     saveImage: function(message, filename, callbackDataURL) {
         var IOService = Components.Constructor("@mozilla.org/network/io-service;1",
                                                "nsIIOService");
@@ -62,3 +64,5 @@ var screenshotSenderLocalFile = {
         });
     }
 };
+
+})(fulmo);

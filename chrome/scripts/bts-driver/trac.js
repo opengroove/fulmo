@@ -26,14 +26,16 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-function fulmo_bts_driver_trac(){}
-fulmo_bts_driver_trac.prototype = {
+(function(fulmo) {
+
+function driver(){}
+driver.prototype = {
 
     /***
      * 設定画面のBTS選択画面に表示するラベル
      */
+    name: 'trac',
     label: 'Trac',
-
     icon: 'trac.png',
 
     _normalizePath: function(account) {
@@ -53,7 +55,7 @@ fulmo_bts_driver_trac.prototype = {
         var url = this._normalizePath(account).url;
         var username = account.userId;
         var password = account.password;
-        var client = new FulmoXMLHttpRequest();
+        var client = new fulmo.FulmoXMLHttpRequest();
         if (account.authType == '0' || account.authType == 'none') {
             client.open('POST', url, true);
         }
@@ -97,7 +99,7 @@ fulmo_bts_driver_trac.prototype = {
         };
         var client = this._createClient(account);
         client.send(data, callback);
-        xmlHttpRequestCredential.cleanup();
+        fulmo.xmlHttpRequestCredential.cleanup();
     },
 
     /***
@@ -447,3 +449,7 @@ fulmo_bts_driver_trac.prototype = {
         this._sendRequest(account, options);
     }
 };
+
+fulmo.bts_driver_trac = driver;
+
+})(fulmo);

@@ -26,6 +26,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+(function(fulmo) {
+
 var settingInterfaceImplementation = {
     listValue: function(selectId) {
         return $('#' + selectId).val();
@@ -142,16 +144,18 @@ var settingInterfaceImplementation = {
         chrome.extension.sendRequest({command: "setupContextMenu", params: params}, function(response) {});
     },
     setupBtsMenu: function() {
-        for (var btsId in fulmo_bts_drivers) {
-            var opt = $('<option>').val(btsId).text(fulmo_bts_drivers[btsId].label);
+        var drivers = fulmo.bts_drivers;
+        var length = drivers.length;
+        for (var i = 0; i < length; i++) {
+            var driver = drivers[i];
+            var opt = $('<option>').val(driver.name).text(driver.label);
             $('#screenshot-sender-account-site-type').append(opt);
         }
     }
 };
 
-screenshotSenderSettings = new ScreenshotSenderSettings(settingInterfaceImplementation);
-
 $(function() {
+    var settings = new fulmo.Settings(settingInterfaceImplementation);
     var _dirty = false;
 
     $.each({'#screenshot-sender-account-add-button': 'addAccount',
@@ -159,20 +163,20 @@ $(function() {
             '#screenshot-sender-account-delete-button': 'deleteAccount',
             '#screenshot-sender-account-set-default-button': 'setDefaultAccount'},
     function(idx, val) {
-        var listener = screenshotSenderSettings[val];
+        var listener = settings[val];
         $(idx).click(function() {
             _dirty = true;
-            listener.call(screenshotSenderSettings);
+            listener.call(settings);
         });
     });
 
-    $('#screenshot-sender-account-test-button').click(screenshotSenderSettings.goTest);
+    $('#screenshot-sender-account-test-button').click(settings.goTest);
 
-    $('#screenshot-sender-account-list').change(screenshotSenderSettings.onSelectAccount);
+    $('#screenshot-sender-account-list').change(settings.onSelectAccount);
     $('#screenshot-sender-account-name').change(function() {
         _dirty = true;
-        screenshotSenderSettings.onChange();
-        screenshotSenderSettings.onChangeName();
+        settings.onChange();
+        settings.onChangeName();
     });
 
     $.each({'#screenshot-sender-account-name': 'keyup',
@@ -181,7 +185,7 @@ $(function() {
     {
         $(idx).bind(val, function() {
             _dirty = true;
-            screenshotSenderSettings.onChangeName();
+            settings.onChangeName();
         });
     });
 
@@ -192,15 +196,15 @@ $(function() {
        '#screenshot-sender-account-password'].join(', ')).change(function()
     {
         _dirty = true;
-        screenshotSenderSettings.onChange();
+        settings.onChange();
     });
     $('#screenshot-sender-context-menu-list').change(function() { _dirty = true });
 
     $('#screenshot-sender-ok').click(function() {
         _dirty = false;
-        screenshotSenderSettings.ok();
+        settings.ok();
     });
-    $('#screenshot-sender-cancel').click(screenshotSenderSettings.cancel);
+    $('#screenshot-sender-cancel').click(settings.cancel);
 
     $('.i18n').each(function() {
         $(this).text(chrome.i18n.getMessage($(this).text()));
@@ -225,7 +229,8 @@ $(function() {
         modal: true,
         width: 320
     });
-    screenshotSenderSettings.init();
+
+    settings.init();
 
     var beforeunload = false;
     $(window).bind('beforeunload', function(ev) {
@@ -235,4 +240,6 @@ $(function() {
             return ' ';
         }
     });
-}, false);
+});
+
+})(fulmo);

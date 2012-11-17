@@ -26,13 +26,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-$(function() {
+(function(fulmo) {
 
     var imageParams = null;
     var baseWindow = window.opener;
-    var editorInterfaceImplementation = {
+    var sender = baseWindow.fulmo.sender;
+    var impl = {
         getImageParams:  function() {
-            imageParams = baseWindow.screenshotSender.getImageParams()
+            imageParams = sender.getImageParams()
             return imageParams;
         },
         returnToMain: function(imageUrl, dirty) {
@@ -58,8 +59,11 @@ $(function() {
             }
         },
         showImageDialog: function(message, filename, callbackDataURL) {
-            screenshotSenderLocalFile.saveImage(message, filename, callbackDataURL);
+            fulmo.localFile.saveImage(message, filename, callbackDataURL);
         }
     };
-    screenshotSenderEditor(editorInterfaceImplementation);
-});
+    document.addEventListener('DOMContentLoaded', function() {
+        fulmo.editor(impl);
+    }, false);
+
+})(fulmo);

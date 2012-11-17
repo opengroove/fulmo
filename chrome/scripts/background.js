@@ -26,7 +26,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-var imageParams = [];
+(function(fulmo) {
+
+fulmo.imageParams = [];
 
 chrome.extension.onRequest.addListener(
     function(req, sender, sendResponse) {
@@ -84,11 +86,11 @@ chrome.extension.onRequest.addListener(
             } else if (req.command == 'getCanvas') {
                 sendResponse({url: canvas.toDataURL()});
             } else if (req.command == 'openMainWindow') {
-                imageParams = req.params;
+                fulmo.imageParams = req.params;
                 window.open('main.html', '_blank', 'resizable,centerscreen,scrollbars,width=600,height=800');
                 sendResponse({});
             } else if (req.command == 'openEditor') {
-                imageParams = req.params;
+                fulmo.imageParams = req.params;
                 chrome.windows.getCurrent(function(w){
                     window.open('editor.html', '_blank', 'resizable,centerscreen,scrollbars,width=' + w.width + ',height=' + w.height);
                     sendResponse({});
@@ -97,7 +99,7 @@ chrome.extension.onRequest.addListener(
                 window.open('settings.html');
                 sendResponse({});
             } else if (req.command == 'loadSetting') {
-                sendResponse({data:JSON.stringify(fulmoSettingsManager.load())});
+                sendResponse({data:JSON.stringify(fulmo.settingsManager.load())});
             } else if (req.command == 'setupContextMenu') {
                 setupContextMenu(req.params);
             }
@@ -158,5 +160,6 @@ function setupContextMenu(params) {
     });
 }
 
-setupContextMenu(fulmoSettingsManager.load().contextMenu);
+setupContextMenu(fulmo.settingsManager.load().contextMenu);
 
+})(fulmo);

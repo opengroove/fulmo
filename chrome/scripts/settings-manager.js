@@ -26,7 +26,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-var fulmoSettingsManager = new (function() {
+(function(fulmo) {
+
+fulmo.settingsManager = new (function() {
     var masterPassword = '{E813A1FD-5C63-49c2-B898-82E683AC713B}';
     this.save = function(data) {
         var str = JSON.stringify(data);
@@ -61,3 +63,4 @@ var fulmoSettingsManager = new (function() {
     };
 })();
 
+})(fulmo);

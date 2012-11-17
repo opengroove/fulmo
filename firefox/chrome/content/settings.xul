@@ -2,11 +2,12 @@
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <!DOCTYPE dialog SYSTEM "chrome://fulmo/locale/screenshot_sender.dtd">
 <dialog id="pref" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-  title="&fulmo_setting_title;" ondialogaccept="return screenshotSenderSettings.ok()">
+  title="&fulmo_setting_title;" ondialogaccept="return fulmo.settings.ok()">
+  <script type="text/javascript" src="scripts/init.js" />
   <script type="text/javascript" src="scripts/bts-driver/trac.js" ></script>
   <script type="text/javascript" src="scripts/bts-driver/ciklone.js" ></script>
   <script type="text/javascript" src="scripts/bts-driver/redmine.js" ></script>
-  <script type="text/javascript" src="scripts/bts.js" ></script>
+  <script type="text/javascript" src="scripts/bts-drivers.js"></script>
   <script type="text/javascript" src="scripts/settings-manager.js" />
   <script type="text/javascript" src="scripts/settings.js" />
   <script type="text/javascript" src="scripts/startup-settings.js" />
@@ -25,16 +26,16 @@
           <vbox>
             <hbox>
               <button id = "screenshot-sender-account-add-button" image="chrome://fulmo/skin/images/new_site.png"
-                label="&fulmo_setting_button_new_account;" oncommand="screenshotSenderSettings.addAccount()" />
+                label="&fulmo_setting_button_new_account;" oncommand="fulmo.settings.addAccount()" />
               <button id = "screenshot-sender-account-copy-button" image="chrome://fulmo/skin/images/copy.png"
-                label="&fulmo_setting_button_copy_account;" oncommand="screenshotSenderSettings.copyAccount()" />
+                label="&fulmo_setting_button_copy_account;" oncommand="fulmo.settings.copyAccount()" />
               <button id = "screenshot-sender-account-delete-button" image="chrome://fulmo/skin/images/delete.png"
-                label="&fulmo_setting_button_delete_account;" oncommand="screenshotSenderSettings.deleteAccount()" />
+                label="&fulmo_setting_button_delete_account;" oncommand="fulmo.settings.deleteAccount()" />
               <button id = "screenshot-sender-account-set-default-button" image="chrome://fulmo/skin/images/set_default_site.png"
-                label="&fulmo_setting_button_set_default_account;" oncommand="screenshotSenderSettings.setDefaultAccount()" />
+                label="&fulmo_setting_button_set_default_account;" oncommand="fulmo.settings.setDefaultAccount()" />
             </hbox>
             <hbox>
-              <listbox id="screenshot-sender-account-list" onselect="screenshotSenderSettings.onSelectAccount()" >
+              <listbox id="screenshot-sender-account-list" onselect="fulmo.settings.onSelectAccount()" >
               </listbox>
               <vbox pack="center">
                 <groupbox id="screenshot-sender-account-editor">
@@ -47,23 +48,23 @@
                       <row>
                         <label id="screenshot-sender-account-name-lv" value="&fulmo_setting_label_name;" />
                         <textbox id="screenshot-sender-account-name"
-                          oninput="screenshotSenderSettings.onChange(); screenshotSenderSettings.onChangeName()"
-                          onchange="screenshotSenderSettings.onChangeName()" clickSelectsAll="true" />
+                          oninput="fulmo.settings.onChange(); fulmo.settings.onChangeName()"
+                          onchange="fulmo.settings.onChangeName()" clickSelectsAll="true" />
                       </row>
                       <row>
                         <label id="screenshot-sender-account-url-lv" value="&fulmo_setting_label_url;" />
-                        <textbox size="50" id="screenshot-sender-account-url" oninput="screenshotSenderSettings.onChange()"
+                        <textbox size="50" id="screenshot-sender-account-url" oninput="fulmo.settings.onChange()"
                            clickSelectsAll="true" />
                       </row>
                       <row>
                         <label id="screenshot-sender-account-site-type-lv" value="&fulmo_setting_label_site_type;" />
-                        <menulist id="screenshot-sender-account-site-type" onselect="screenshotSenderSettings.onChange()" >
+                        <menulist id="screenshot-sender-account-site-type" onselect="fulmo.settings.onChange()" >
                           <menupopup id="screenshot-sender-bts-menu" />
                         </menulist>
                       </row>
                       <row>
                         <label id="screenshot-sender-account-auth-type-lv" value="&fulmo_setting_label_auth_type;" />
-                        <menulist id="screenshot-sender-account-auth-type" onselect="screenshotSenderSettings.onChange()" >
+                        <menulist id="screenshot-sender-account-auth-type" onselect="fulmo.settings.onChange()" >
                           <menupopup>
                             <menuitem label="&fulmo_setting_option_auth_type_no_auth;" value="none"/>
                             <menuitem label="&fulmo_setting_option_auth_type_http;" value="http"/>
@@ -72,12 +73,12 @@
                       </row>
                       <row>
                         <label id="screenshot-sender-account-user-id-lv" value="&fulmo_setting_label_user_id;" />
-                        <textbox id="screenshot-sender-account-user-id" oninput="screenshotSenderSettings.onChange()"
+                        <textbox id="screenshot-sender-account-user-id" oninput="fulmo.settings.onChange()"
                            clickSelectsAll="true" />
                       </row>
                       <row>
                         <label id="screenshot-sender-account-password-lv" value="&fulmo_setting_label_password;" />
-                        <textbox type="password" id="screenshot-sender-account-password" oninput="screenshotSenderSettings.onChange()"
+                        <textbox type="password" id="screenshot-sender-account-password" oninput="fulmo.settings.onChange()"
                            clickSelectsAll="true" />
                       </row>
                     </rows>
@@ -85,7 +86,7 @@
                 </groupbox>
                 <stack>
                   <button id="screenshot-sender-account-test-button" label="&fulmo_setting_button_connect_test;"
-                    oncommand="screenshotSenderSettings.goTest()" />
+                    oncommand="fulmo.settings.goTest()" />
                   <stack id="screenshot-sender-account-test-progres" hidden="true">
                     <progressmeter mode="undetermined" />
                     <label align="center" style="text-align:center;padding-top: 2px;" value="&fulmo_setting_message_testing_now;" />
@@ -98,7 +99,7 @@
         <tabpanel>
           <groupbox>
             <caption label="&fulmo_setting_h2_tool_button;" />
-            <listbox id="screenshot-sender-general-default-action-list" onselect="screenshotSenderSettings.onSelectDefaultAction()" rows="4">
+            <listbox id="screenshot-sender-general-default-action-list" onselect="fulmo.settings.onSelectDefaultAction()" rows="4">
               <listitem class="listitem-iconic" image="chrome://fulmo/skin/images/get_document.png"
                 label="&fulmo_action_all_send;" value="0" />
               <listitem class="listitem-iconic" image="chrome://fulmo/skin/images/get_window.png"

@@ -26,10 +26,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-var xmlHttpRequestCredential = new function() {
+(function(fulmo) {
+
+fulmo.xmlHttpRequestCredential = new function() {
     this.cleanup = function() {};
 };
-var FulmoXMLHttpRequest = XMLHttpRequest;
+var FulmoXMLHttpRequest = fulmo.FulmoXMLHttpRequest = XMLHttpRequest;
 
 FulmoXMLHttpRequest.prototype.sendAsBinary = function(data, callback) {
     function byteValue(x){
@@ -118,3 +120,5 @@ FulmoXMLHttpRequest.prototype.send = function(data, callback) {
         removeChain(0);
     });
 }
+
+})(fulmo);

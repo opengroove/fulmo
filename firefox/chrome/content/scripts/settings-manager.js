@@ -26,7 +26,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-var fulmoSettingsManager = new (function() {
+(function(fulmo) {
+fulmo.settingsManager = new (function() {
     var loginManagerPrefix = 'chrome://fulmo.account.';
     this.save = function(data) {
         var prefSvc = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces.nsIPrefService);
@@ -83,3 +84,5 @@ var fulmoSettingsManager = new (function() {
         return settings;
     };
 })();
+
+})(fulmo);

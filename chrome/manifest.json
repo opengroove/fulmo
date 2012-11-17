@@ -1,6 +1,6 @@
 {
   "name": "__MSG_fulmo_name__",
-  "version": "1.0.2",
+  "version": "1.0.2.1",
   "manifest_version": 2,
   "description": "__MSG_fulmo_description__",
   "options_page": "settings.html",
@@ -19,7 +19,7 @@
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],
-      "js": ["scripts/screenshot-sender.js", "scripts/content.js"]
+      "js": ["scripts/init.js", "scripts/screenshot-sender.js", "scripts/content.js"]
     }
   ],
   "default_locale": "en",

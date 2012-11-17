@@ -26,6 +26,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+(function(fulmo) {
+
 function getScrollPos() {
     var x = document.documentElement.scrollLeft || document.body.scrollLeft;
     var y = document.documentElement.scrollTop || document.body.scrollTop;
@@ -144,7 +146,7 @@ var contentInterfaceImplementation = {
     }
 };
 
-var screenshotSender = new ScreenshotSender(function(){return window;}, contentInterfaceImplementation);
+var sender = new fulmo.Sender(function(){return window;}, contentInterfaceImplementation);
 chrome.extension.onRequest.addListener(
     function(request, sender, sendResponse) {
         if (!request.command) {
@@ -155,18 +157,20 @@ chrome.extension.onRequest.addListener(
             if (sz[0] < 320 || sz[1] < 100) {
                 alert(contentInterfaceImplementation.getString('fulmo_not_enough_width'));
             } else {
-                screenshotSender.goSend(0);
+                sender.goSend(0);
             }
             sendResponse({result: 'ok'});
         } else if (request.command == 'windowCapture') {
-            screenshotSender.goSend(10);
+            sender.goSend(10);
             sendResponse({result: 'ok'});
         } else if (request.command == 'selectArea') {
-            screenshotSender.goSend(20);
+            sender.goSend(20);
             sendResponse({result: 'ok'});
         } else if (request.command == 'withoutImage') {
-            screenshotSender.goSend(30);
+            sender.goSend(30);
             sendResponse({result: 'ok'});
         }
     }
 );
+
+})(fulmo);

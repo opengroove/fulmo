@@ -26,7 +26,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-var screenshotSenderLocalFile = {
+(function(fulmo) {
+
+fulmo.localFile = {
     saveImage: function(message, filename, callbackDataURL) {
         function getBlobFromDataURL(url) {
             var re = /^data:([^,;]+)((?:;[^;,]*)*),([^\n]*)/;
@@ -77,4 +79,6 @@ var screenshotSenderLocalFile = {
             }
         });
     }
-}
+};
+
+})(fulmo);

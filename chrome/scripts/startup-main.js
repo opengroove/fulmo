@@ -47,18 +47,14 @@
     };
 })(jQuery);
 
-$(function() {
+(function(fulmo) {
     var dialogInit = false;
-    var mainInterfaceImplementation = {
+    var mainImpl = {
         getImageParams:  function() {
-            var p= window.opener.imageParams;
-            //window.opener.imageParams = null;
-            return p;
+            return window.opener[fulmo.key].imageParams;
         },
         setImageParams: function(v) {
-            imageParams = [
-                v.url, v.width, v.height
-            ];
+            fulmo.imageParams = [v.url, v.width, v.height];
         },
         getString: function(tag) {
             try {
@@ -81,7 +77,7 @@ $(function() {
             }
         },
         showImageDialog: function(message, filename, callbackDataURL) {
-            screenshotSenderLocalFile.saveImage(message, filename, callbackDataURL);
+            fulmo.localFile.saveImage(message, filename, callbackDataURL);
         },
         login: function(account, succFunc, failFunc) {
             if (account.userId.length && account.password.length) {
@@ -157,5 +153,5 @@ $(function() {
         }
 
     };
-    screenshotSenderMain(mainInterfaceImplementation);
-}, false);
+    fulmo.main(mainImpl);
+})(fulmo);

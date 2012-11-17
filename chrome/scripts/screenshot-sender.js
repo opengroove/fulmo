@@ -26,7 +26,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-var ScreenshotSender = function(W, CII) {
+(function(fulmo) {
+
+fulmo.Sender = function(W, CII) {
     var settingsDialog = null;
     var settingsDialog_bk = null;
     var doingNow = false;
@@ -252,3 +254,5 @@ var ScreenshotSender = function(W, CII) {
         CII.setupContextMenu(params);
     };
 }
+
+})(fulmo);

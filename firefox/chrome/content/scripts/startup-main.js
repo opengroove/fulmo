@@ -26,17 +26,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+(function(fulmo) {
+
 window.addEventListener('load', function() {
     var baseWindow = window.opener;
 
     var mainInterfaceImplementation = {
         getImageParams:  function() {
-            return baseWindow.screenshotSender.getImageParams();
+            return baseWindow.fulmo.sender.getImageParams();
         },
         setImageParams: function(v) {
-            imageParams = [
-                v.url, v.width, v.height
-            ];
+            fulmo.imageParams = [ v.url, v.width, v.height ];
         },
         getString: function(tag) {
             try {
@@ -88,12 +88,14 @@ window.addEventListener('load', function() {
             location.href = 'editor.html' + dirty_str;
         },
         showImageDialog: function(message, filename, callbackDataURL) {
-            screenshotSenderLocalFile.saveImage(message, filename, callbackDataURL);
+            fulmo.localFile.saveImage(message, filename, callbackDataURL);
         }
     };
     if (!window.opener) {
         window.close();
         return;
     }
-    screenshotSenderMain(mainInterfaceImplementation);
+    fulmo.main(mainInterfaceImplementation);
 }, false);
+
+})(fulmo);

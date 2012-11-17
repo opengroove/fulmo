@@ -26,7 +26,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-function fulmo_bts_driver_ciklone(){}
-fulmo_bts_driver_ciklone.prototype = new fulmo_bts_driver_trac();
-fulmo_bts_driver_ciklone.prototype.label = 'ciklone.com';
-fulmo_bts_driver_ciklone.prototype.icon = 'ciklone.png';
+(function(fulmo) {
+
+    function driver(){}
+    var prototype = fulmo.bts_driver_trac.prototype;
+    for (var name in prototype) {
+        var value = prototype[name];
+        switch (name) {
+        case 'name':
+            value = 'ciklone';
+            break;
+        case 'label':
+            value = 'ciklone.com';
+            break;
+        case 'icon':
+            value = 'ciklone.png';
+            break;
+        }
+        driver.prototype[name] = value;
+    }
+
+    fulmo.bts_driver_ciklone = driver;
+
+})(fulmo);
