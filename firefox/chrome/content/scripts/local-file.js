@@ -57,10 +57,19 @@ fulmo.localFile = {
         if (!picker.file) {
             return;
         }
+        var context = null;
+        try {
+            Components.utils.import("resource://gre/modules/PrivateBrowsingUtils.jsm");
+            var mediator = Components.classes["@mozilla.org/appshell/window-mediator;1"]
+                                     .getService(Components.interfaces.nsIWindowMediator);
+            var browser = mediator.getMostRecentWindow("navigator:browser");
+            context = PrivateBrowsingUtils.getPrivacyContextFromWindow(browser);
+        }
+        catch(e) { }
         callbackDataURL(function(dataURL) {
             var uri = IOService().newURI(dataURL, "UTF8", null);
             var persist = WebBrowserPersist();
-            persist.saveURI(uri, null, null, null, null, picker.file);
+            persist.saveURI(uri, null, null, null, null, picker.file, context);
         });
     }
 };
