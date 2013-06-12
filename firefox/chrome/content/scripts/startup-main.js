@@ -33,7 +33,7 @@ window.addEventListener('load', function() {
 
     var mainInterfaceImplementation = {
         getImageParams:  function() {
-            return baseWindow.fulmo.sender.getImageParams();
+            return baseWindow.fulmo.capture.getImageParams();
         },
         setImageParams: function(v) {
             fulmo.imageParams = [ v.url, v.width, v.height ];

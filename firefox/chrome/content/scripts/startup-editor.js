@@ -30,10 +30,10 @@
 
     var imageParams = null;
     var baseWindow = window.opener;
-    var sender = baseWindow.fulmo.sender;
+    var capture = baseWindow.fulmo.capture;
     var impl = {
         getImageParams:  function() {
-            imageParams = sender.getImageParams()
+            imageParams = capture.getImageParams()
             return imageParams;
         },
         returnToMain: function(imageUrl, dirty) {

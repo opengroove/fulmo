@@ -3,7 +3,7 @@
 <!DOCTYPE dialog SYSTEM "chrome://fulmo/locale/screenshot_sender.dtd">
 <overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   <script type="application/x-javascript" src="chrome://fulmo/content/scripts/init.js" />
-  <script type="application/x-javascript" src="chrome://fulmo/content/scripts/screenshot-sender.js" />
+  <script type="application/x-javascript" src="chrome://fulmo/content/scripts/screenshot-capture.js" />
   <script type="application/x-javascript" src="chrome://fulmo/content/scripts/settings-manager.js" />
   <script type="application/x-javascript" src="chrome://fulmo/content/scripts/startup.js" />
   <stringbundleset>

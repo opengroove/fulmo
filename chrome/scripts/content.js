@@ -146,7 +146,7 @@ var contentInterfaceImplementation = {
     }
 };
 
-var sender = new fulmo.Sender(function(){return window;}, contentInterfaceImplementation);
+var capture = new fulmo.Capture(function(){return window;}, contentInterfaceImplementation);
 chrome.extension.onRequest.addListener(
     function(request, sender, sendResponse) {
         if (!request.command) {
@@ -157,17 +157,17 @@ chrome.extension.onRequest.addListener(
             if (sz[0] < 320 || sz[1] < 100) {
                 alert(contentInterfaceImplementation.getString('fulmo_not_enough_width'));
             } else {
-                sender.goSend(0);
+                capture.goSend(0);
             }
             sendResponse({result: 'ok'});
         } else if (request.command == 'windowCapture') {
-            sender.goSend(10);
+            capture.goSend(10);
             sendResponse({result: 'ok'});
         } else if (request.command == 'selectArea') {
-            sender.goSend(20);
+            capture.goSend(20);
             sendResponse({result: 'ok'});
         } else if (request.command == 'withoutImage') {
-            sender.goSend(30);
+            capture.goSend(30);
             sendResponse({result: 'ok'});
         }
     }

@@ -144,7 +144,7 @@
         this.setupContextMenu = function(params) {
             var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator);
             var browserWindow = wm.getMostRecentWindow("navigator:browser");
-            browserWindow[fulmo.key].sender.setupContextMenu(params);
+            browserWindow[fulmo.key].capture.setupContextMenu(params);
         }
 
         this.setupBtsMenu = function() {

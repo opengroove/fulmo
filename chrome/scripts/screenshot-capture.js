@@ -28,7 +28,7 @@
 
 (function(fulmo) {
 
-fulmo.Sender = function(W, CII) {
+fulmo.Capture = function(W, CII) {
     var settingsDialog = null;
     var settingsDialog_bk = null;
     var doingNow = false;

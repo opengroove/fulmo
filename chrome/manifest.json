@@ -19,7 +19,7 @@
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],
-      "js": ["scripts/init.js", "scripts/screenshot-sender.js", "scripts/content.js"]
+      "js": ["scripts/init.js", "scripts/screenshot-capture.js", "scripts/content.js"]
     }
   ],
   "default_locale": "en",

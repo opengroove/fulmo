@@ -94,7 +94,7 @@ var impl = new (function contentInterfaceImplementation(w) {
             if (labelMode)
                 label = o.getString('fulmo_name') + ' - ' + label;
             icon = 'chrome://fulmo/skin/images/' + icon;
-            var command = function() { fulmo.sender.goSend(arg) };
+            var command = function() { fulmo.capture.goSend(arg) };
             var item = w.document.createElement('menuitem');
             item.className = 'menuitem-iconic screenshot-sender-menu-item';
             item.setAttribute('label', label);
@@ -136,6 +136,6 @@ window.addEventListener('load', function() {
     });
 }, false);
 
-fulmo.sender = new fulmo.Sender(function(){return window.content;}, impl);
+fulmo.capture = new fulmo.Capture(function(){return window.content;}, impl);
 
 })(fulmo);
