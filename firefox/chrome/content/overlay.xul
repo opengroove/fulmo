@@ -10,20 +10,20 @@
     <stringbundle id="screenshot-sender-strings" src="chrome://fulmo/locale/screenshot_sender.properties"/>
   </stringbundleset>
   <toolbarpalette id="BrowserToolbarPalette">
-    <toolbarbutton id="screenshot-sender-button" type="menu-button" oncommand="fulmo.sender.defaultCommand()"
+    <toolbarbutton id="screenshot-sender-button" type="menu-button" oncommand="fulmo.capture.defaultCommand()"
       label="&fulmo_name;" tooltiptext="&fulmo_name;" oncommandupdate="" class="toolbarbutton-1 chromeclass-toolbar-additional" >
         <menupopup onpopupshowing="">
           <menuitem class="menuitem-iconic" image="chrome://fulmo/skin/images/get_document.png" 
-            label="&fulmo_action_all_send;" oncommand="fulmo.sender.goSend(0)" />
+            label="&fulmo_action_all_send;" oncommand="fulmo.capture.goSend(0)" />
           <menuitem class="menuitem-iconic" image="chrome://fulmo/skin/images/get_window.png" 
-            label="&fulmo_action_view_send;" oncommand="fulmo.sender.goSend(10)" />
+            label="&fulmo_action_view_send;" oncommand="fulmo.capture.goSend(10)" />
           <menuitem class="menuitem-iconic" image="chrome://fulmo/skin/images/get_selected_area.png" 
-            label="&fulmo_action_parts_send;" oncommand="fulmo.sender.goSend(20)" />
+            label="&fulmo_action_parts_send;" oncommand="fulmo.capture.goSend(20)" />
           <menuitem class="menuitem-iconic" image="chrome://fulmo/skin/images/create_ticket.png" 
-            label="&fulmo_action_no_image_send;" oncommand="fulmo.sender.goSend(30)" />
+            label="&fulmo_action_no_image_send;" oncommand="fulmo.capture.goSend(30)" />
           <menuseparator/>
           <menuitem class="menuitem-iconic" image="chrome://fulmo/skin/images/settings.png" 
-            label="&fulmo_action_setting;" oncommand="fulmo.sender.settings()" />
+            label="&fulmo_action_setting;" oncommand="fulmo.capture.settings()" />
         </menupopup>
     </toolbarbutton>
   </toolbarpalette>

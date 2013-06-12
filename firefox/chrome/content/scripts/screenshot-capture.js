@@ -1,0 +1,1 @@
+../../../../chrome/scripts/screenshot-capture.js
