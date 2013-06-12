@@ -811,8 +811,7 @@ driver.prototype = {
             domIssue.appendChild(domDescription);
             var domCustomFields = document.createElement('custom_fields');
             domCustomFields.setAttribute('type', 'array');
-            domIssue.appendChild(domCustomFields);
-            var custom = {};
+            var countCustomFields = 0;
             for (id in p.attributes) {
                 if (id.substr(0, 'custom-attributes-'.length) == 'custom-attributes-') {
                     var domCustomField = document.createElement('custom_field');
@@ -830,11 +829,15 @@ driver.prototype = {
                         domCustomField.appendChild(domCustomFieldValue);
                     }
                     domCustomFields.appendChild(domCustomField);
+                    countCustomFields++;
                 } else {
                     var domAttr = document.createElement(id);
                     domAttr.textContent = p.attributes[id];
                     domIssue.appendChild(domAttr);
                 }
+            }
+            if (countCustomFields > 0) {
+                domIssue.appendChild(domCustomFields);
             }
             if (token !== null) {
                 var domUploads = document.createElement('uploads');
