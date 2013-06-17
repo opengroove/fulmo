@@ -153,5 +153,5 @@
         }
 
     };
-    fulmo.main(mainImpl);
+    $(document).ready(function() { fulmo.main(mainImpl) });
 })(fulmo);
