@@ -283,6 +283,7 @@
                                 $('#screenshot-sender-property-reporter-lv').inFieldLabels(inFieldLabelsOptions);
                             }
                             currentDriver.createProperty(idPrefix, props);
+                            $('#screenshot-sender-property-summary')[0].focus();
                             setImageAreaAnimation();
                         },
                         formatString: MII.getFormattedString,
