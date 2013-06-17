@@ -297,9 +297,9 @@
         }
 
         function validateTicket() {
-            var sumarry = $('#screenshot-sender-property-sumarry').val().trim();
-            if (!sumarry.length) {
-                alert(MII.getString('fulmo_main_message_sumarry_ind'));
+            var summary = $('#screenshot-sender-property-summary').val().trim();
+            if (!summary.length) {
+                alert(MII.getString('fulmo_main_message_summary_ind'));
                 return false;
             }
             var reporter = $('#screenshot-sender-property-reporter').val().trim();
@@ -353,7 +353,7 @@
 
             currentDriver.send({
                 loginProperties: loginProperties,
-                sumarry: $('#screenshot-sender-property-sumarry').val().trim(),
+                summary: $('#screenshot-sender-property-summary').val().trim(),
                 description: $('#screenshot-sender-property-description').val().trim(),
                 imageParams: imageParams,
                 imageFileName: imageParams ? imageFileName() : null,

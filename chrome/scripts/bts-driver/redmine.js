@@ -783,7 +783,7 @@ driver.prototype = {
     /*** 
      * チケットをサーバーに送信する
        @param {hash} loginProperties loginAndGetFields() 関数が success() 関数で返した、パラメータ情報
-       @param {string} sumarry タイトル
+       @param {string} summary タイトル
        @param {string} description 概要
        @param {array} imageParams 画像情報
        @param {string} imageParams[0] 画像のuri
@@ -805,7 +805,7 @@ driver.prototype = {
             domOuter.appendChild(domIssue);
             var domSubject = document.createElement('subject');
             var domDescription = document.createElement('description');
-            domSubject.textContent = p.sumarry;
+            domSubject.textContent = p.summary;
             domDescription.textContent = p.description;
             domIssue.appendChild(domSubject);
             domIssue.appendChild(domDescription);

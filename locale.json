@@ -215,7 +215,7 @@
       "ja": "チケットの作成に失敗しました。エラーの詳細は以下の通りです。",
       "en": "Cannot create a ticket. Error details:"
     },
-    "fulmo_main_message_sumarry_ind": {
+    "fulmo_main_message_summary_ind": {
       "ja": "概要を入力して下さい。",
       "en": "Require summary"
     },

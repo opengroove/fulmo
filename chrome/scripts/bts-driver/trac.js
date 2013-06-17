@@ -333,7 +333,7 @@ driver.prototype = {
             }
         }
 
-        var ignore = [  'status', 'resolution', 'time', 'changetime', 'sumarry', 'reporter', 'description' ];
+        var ignore = [  'status', 'resolution', 'time', 'changetime', 'summary', 'reporter', 'description' ];
         var topStandardParams = {
             'type': null,
             'priority': null,
@@ -385,7 +385,7 @@ driver.prototype = {
     /***
      * チケットをサーバーに送信する
        @param {hash} loginProperties loginAndGetFields() 関数が success() 関数で返した、パラメータ情報
-       @param {string} sumarry タイトル
+       @param {string} summary タイトル
        @param {string} description 概要
        @param {array} imageParams 画像情報
         @param {string} imageParams[0] 画像のuri
@@ -401,8 +401,7 @@ driver.prototype = {
     send: function(p) {
         var self = this;
         var account = p.loginProperties.account;
-        var params = [];
-        params.push(p.sumarry);
+        var params = [p.summary];
         var desc = p.description;
         if (p.imageParams) {
             desc += '\n\n[[Image(' + p.imageFileName +
