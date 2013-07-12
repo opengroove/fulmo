@@ -28,6 +28,12 @@
 
 (function(fulmo) {
 
+function normalizeNewline(value) {
+    if ($.type(value) === 'string')
+        value = value.replace(/\r?\n/g, '\r\n');
+    return value;
+}
+
 function driver(){}
 driver.prototype = {
 
@@ -401,14 +407,18 @@ driver.prototype = {
     send: function(p) {
         var self = this;
         var account = p.loginProperties.account;
-        var params = [p.summary];
+        var params = [normalizeNewline(p.summary)];
         var desc = p.description;
         if (p.imageParams) {
             desc += '\n\n[[Image(' + p.imageFileName +
                     (p.imageParams[1] > 320 ? ',320px)]]' : ')]]');
         }
-        params.push(desc);
-        params.push($.extend({reporter: p.reporter}, p.attributes));
+        params.push(normalizeNewline(desc));
+        var attributes = $.extend({reporter: p.reporter}, p.attributes);
+        $.each(attributes, function(idx, val) {
+            attributes[idx] = normalizeNewline(val);
+        });
+        params.push(attributes);
         params.push(true);      // notify parameter
 
         var options = {method: 'ticket.create', params: params};
