@@ -1,6 +1,6 @@
 {
   "master_locale": "ja",
-  "locales": ["ja", "en"],
+  "locales": ["ja", "he", "en"],
   "firefox": {
     "dir": "firefox/chrome/locale",
     "dtd": "screenshot_sender.dtd",
@@ -13,338 +13,446 @@
   "messages": {
     "fulmo_name": {
       "ja": "fulmo",
+      "he": "fulmo",
       "en": "fulmo"
     },
     "fulmo_description": {
       "ja": "スクリーンショット付きで簡単チケット作成。スクリーンショットの編集もできる。",
+      "he": "יצירה קלה של קריאות שירות עם תמונות ערוכות.",
       "en": "Easy ticket creation with an annotated screenshot."
     },
     "fulmo_menu_title": {
       "ja": "fulmo",
+      "he": "fulmo",
       "en": "fulmo"
     },
     "fulmo_general_no_site_warn": {
       "ja": "登録サイトがありません。設定画面で最初にサイトを登録して下さい。\n今すぐ設定画面を開きますか?",
+      "he": "לא הוסף אתר קריאות שירות לפתיחת קריאה. Please add the site.\nAre you sure you want to visit the fulmo settings?",
       "en": "You have no site to create ticket/issue. Please add the site.\nAre you sure you want to visit the fulmo settings?"
     },
     "fulmo_general_button_ok": {
       "ja": "OK",
+      "he": "Ok",
       "en": "Ok"
     },
     "fulmo_general_button_cancel": {
       "ja": "キャンセル",
+      "he": "Cancel",
       "en": "Cancel"
     },
     "screenshot_general_message_please_select": {
       "ja": "選択して下さい",
+      "he": "בחר אתר",
       "en": "Select a site"
     },
-
     "fulmo_action_all_send": {
       "ja": "ページ全体を登録",
+      "he": "העלה עמוד שלם",
       "en": "Post entire page"
     },
     "fulmo_action_view_send": {
       "ja": "ウィンドウ内を登録",
+      "he": "העלה איזור מוצג",
       "en": "Post visible position"
     },
     "fulmo_action_parts_send": {
       "ja": "選択範囲を登録",
+      "he": "העלה מבחירה",
       "en": "Post selection"
     },
     "fulmo_action_no_image_send": {
       "ja": "画像なしで登録",
+      "he": "העלה ללא תמונה",
       "en": "Post without screenshot"
     },
     "fulmo_action_setting": {
       "ja": "設定",
+      "he": "הגדרות",
       "en": "Settings"
     },
-
     "fulmo_setting_title": {
       "ja": "fulmo の設定",
+      "he": "Fulmo הגדרות",
       "en": "Fulmo Settings"
     },
     "fulmo_setting_tab_general": {
-      "ja": "設定", "en": "Settings"
+      "ja": "設定",
+      "he": "הגדרות",
+      "en": "Settings"
     },
     "fulmo_setting_tab_site": {
-      "ja": "サイト", "en": "Site"
+      "ja": "サイト",
+      "he": "Site",
+      "en": "Site"
     },
     "fulmo_setting_label_name": {
-      "ja": "名前:", "en": "Name:"
+      "ja": "名前:",
+      "he": "שם השירות:",
+      "en": "Name:"
     },
     "fulmo_setting_label_url": {
-      "ja": "URL:", "en": "URL:"
+      "ja": "URL:",
+      "he": "כתובת:",
+      "en": "URL:"
     },
     "fulmo_setting_label_site_type": {
-      "ja": "サイト種別:", "en": "Site type:"
+      "ja": "サイト種別:",
+      "he": "סוג המערכת:",
+      "en": "Site type:"
     },
     "fulmo_setting_label_auth_type": {
-      "ja": "認証方法:", "en": "Auth type:"
+      "ja": "認証方法:",
+      "he": "סוג אימות:",
+      "en": "Auth type:"
     },
     "fulmo_setting_option_auth_type_no_auth": {
-      "ja": "なし", "en": "(None)"
+      "ja": "なし",
+      "he": "ללא אימות",
+      "en": "(None)"
     },
     "fulmo_setting_option_auth_type_http": {
-      "ja": "HTTP認証", "en": "HTTP auth"
+      "ja": "HTTP認証",
+      "he": "אימות בסיסי",
+      "en": "HTTP auth"
     },
     "fulmo_setting_label_user_id": {
-      "ja": "ユーザーID:", "en": "User id:"
+      "ja": "ユーザーID:",
+      "he": "שם משתמש:",
+      "en": "User id:"
     },
     "fulmo_setting_label_password": {
-      "ja": "パスワード:", "en": "Password:"
+      "ja": "パスワード:",
+      "he": "סיסמה:",
+      "en": "Password:"
     },
     "fulmo_setting_button_connect_test": {
-      "ja": "接続テスト", "en": "Connection test"
+      "ja": "接続テスト",
+      "he": "בדיקת חיבור",
+      "en": "Connection test"
     },
     "fulmo_setting_message_testing_now": {
       "ja": "接続テストを実行しています...",
+      "he": "Try to connect...",
       "en": "Try to connect..."
     },
     "fulmo_setting_button_new_account": {
-      "ja": "新規サイト", "en": "New site"
+      "ja": "新規サイト",
+      "he": "אתר חדש",
+      "en": "New site"
     },
     "fulmo_setting_button_copy_account": {
-      "ja": "コピー", "en": "Copy"
+      "ja": "コピー",
+      "he": "העתק",
+      "en": "Copy"
     },
     "fulmo_setting_button_delete_account": {
-      "ja": "削除", "en": "Remove"
+      "ja": "削除",
+      "he": "הסר",
+      "en": "Remove"
     },
     "fulmo_setting_button_set_default_account": {
-      "ja": "既定のサイト", "en": "Default site"
+      "ja": "既定のサイト",
+      "he": "קבע כברירת מחדל",
+      "en": "Default site"
     },
     "fulmo_setting_h2_account": {
-      "ja": "サイトの設定", "en": "Site settings"
+      "ja": "サイトの設定",
+      "he": "הגדרות אתרי השירות",
+      "en": "Site settings"
     },
     "fulmo_setting_h2_tool_button": {
       "ja": "ツールボタンクリック時の動作",
+      "he": "Toolbar icon action",
       "en": "Toolbar icon action"
     },
     "fulmo_setting_h2_contenxt_menu": {
       "ja": "右クリックメニューの設定",
+      "he": "תפריט לחיצה ימנית",
       "en": "Right-click menu"
     },
     "fulmo_setting_message_context_menu_help": {
       "ja": "右クリックメニューに追加する項目を選択します。CTRL や SHIFT キーで選択を行うことで複数の項目を追加することができます。",
+      "he": "בחר את שיטות צילום התמונה שאתה רוצה בתפריט ימני. אפשר לבחור כמה בעזרת SHIFT.",
       "en": "Select the items that you want to add to right-click menu. It can be selected multiple items with SHIFT and/or CTRL key."
     },
     "fulmo_setting_message_account_name_ind": {
       "ja": "名前を指定して下さい",
+      "he": "Enter site's name",
       "en": "Enter site's name"
     },
     "fulmo_setting_message_url_ind": {
       "ja": "URLを指定して下さい",
+      "he": "Enter site's URL",
       "en": "Enter site's URL"
     },
     "fulmo_setting_value_default_account_name": {
-      "ja": "新規サイト", "en": "New site"
+      "ja": "新規サイト",
+      "he": "אתר חדש",
+      "en": "New site"
     },
     "fulmo_value_copied_account_name": {
       "ja": "コピー ～ ${name}",
+      "he": "Copy - ${name}",
       "en": "Copy - ${name}"
     },
     "fulmo_setting_message_url_warn": {
       "ja": "URLの書式が正しくありません。アクセス可能なURLかどうかを確認して下さい。",
+      "he": "כתובת לא תקינה. אנא בדוק שהכתובת היא נגישה.",
       "en": "Invalid URL. Please check the URL is accessible."
     },
     "fulmo_setting_message_confirm_delete": {
       "ja": "サイト「%S」を削除しますか?",
+      "he": "Are you sure you want to remove '%S' site?",
       "en": "Are you sure you want to remove '%S' site?"
     },
-
     "fulmo_test_title": {
       "ja": "接続テスト",
+      "he": "בדיקת חיבור",
       "en": "Connection test"
     },
     "fulmo_test_message_description_1": {
       "ja": "サーバーと通信し、接続テストを行います。",
+      "he": "נסיון התחברות תוך שימוש בהגדרות.",
       "en": "Try to connect using the settings."
     },
     "fulmo_test_message_description_2": {
       "ja": "認証情報を設定していない場合は、以下のフィールドで指定して下さい。",
+      "he": "Enter the following fields if you need to authenticate the site.",
       "en": "Enter the following fields if you need to authenticate the site."
     },
     "fulmo_test_message_succeeded": {
       "ja": "接続テストに成功しました。\n\nURL: %S\nXML RPC Version: %S.%S.%S",
+      "he": "התחבר לשרת בהצלחה.\n\nכתובת: %S\nXML RPC Version: %S.%S.%S",
       "en": "Successfully connected to the site.\n\nURL: %S\nXML RPC Version: %S.%S.%S"
     },
     "fulmo_test_message_succeeded_no_version": {
       "ja": "接続テストに成功しました。\n\nURL: %S",
+      "he": "התחבר בהצלחה לשרת.\n\nURL: %S",
       "en": "Successfully connected to the site.\n\nURL: %S"
     },
     "fulmo_test_message_failed": {
       "ja": "接続テストに失敗しました。\n\nURL: %S\n\nエラーの詳細は以下の通りです。\n%S",
+      "he": "לא מצליח להתחבר לאתר.\n\nURL: %S\n\nError details:\n%S",
       "en": "Cannot connect to the site.\n\nURL: %S\n\nError details:\n%S"
     },
-
     "fulmo_login_title": {
       "ja": "認証情報の入力",
+      "he": "דרוש אימות פרטים מזהים",
       "en": "Require authentication"
     },
     "fulmo_login_message_desctiption": {
       "ja": "以下のサイトにログインします",
+      "he": "Login to the following site",
       "en": "Login to the following site"
     },
     "fulmo_login_label_user_id": {
-      "ja": "ユーザーID:", "en": "User id:"
+      "ja": "ユーザーID:",
+      "he": "שם משתמש:",
+      "en": "User id:"
     },
     "fulmo_login_label_account_name": {
-      "ja": "サイト:", "en": "Site:"
+      "ja": "サイト:",
+      "he": "Site:",
+      "en": "Site:"
     },
     "fulmo_login_label_password": {
-      "ja": "パスワード:", "en": "Password"
+      "ja": "パスワード:",
+      "he": "סיסמה",
+      "en": "Password"
     },
     "fulmo_login_message_failed_1": {
       "ja": "ログインできません。エラーの詳細は以下の通りです。",
+      "he": "לא יכול להתחבר. Error details:",
       "en": "Cannot login. Error details:"
     },
     "fulmo_login_message_failed_2": {
       "ja": "ウィンドウ上部のリストから認証可能なサイトを選択し、やりなおして下さい。",
+      "he": "Select a site which you want to create a ticket in the top of this page.",
       "en": "Select a site which you want to create a ticket in the top of this page."
     },
-
     "fulmo_main_title": {
       "ja": "チケットの新規作成",
+      "he": "פתיחת קריאת שירות",
       "en": "Create ticket"
     },
     "fulmo_main_h1": {
-      "ja": "fulmo", "en": "fulmo"
+      "ja": "fulmo",
+      "he": "fulmo",
+      "en": "fulmo"
     },
     "fulmo_main_message_create_ticket_failed": {
       "ja": "チケットの作成に失敗しました。エラーの詳細は以下の通りです。",
+      "he": "שגיאה בפתיחת קריאה חדשה, השגיאה:\n",
       "en": "Cannot create a ticket. Error details:"
     },
     "fulmo_main_message_summary_ind": {
       "ja": "概要を入力して下さい。",
+      "he": "הנושא הקריאה הוא שדה חובה!",
       "en": "Require summary"
     },
     "fulmo_main_message_reporter_ind": {
       "ja": "報告者を入力して下さい。",
+      "he": "Require reporter",
       "en": "Require reporter"
     },
     "fulmo_main_message_create_ticket_but_could_not_put_img": {
       "ja": "チケットの作成には成功しましたが、画像の添付に失敗しました。\nエラーの詳細は以下の通りです。",
+      "he": "הקריאה נוצרה, אך הייתה שגיאה בהוספת תמונה לקריאה.\nError details:",
       "en": "The ticket has been created, but an error occurred while attaching the image.\nError details:"
     },
     "fulmo_main_anchor_attachment": {
       "ja": "添付ファイル",
+      "he": "Attachment",
       "en": "Attachment"
     },
     "fulmo_main_anchor_attachment_save": {
       "ja": "保存",
+      "he": "שמור",
       "en": "Save"
     },
     "fulmo_main_anchor_attachment_edit": {
       "ja": "編集",
+      "he": "עריכה",
       "en": "Edit"
     },
     "fulmo_main_h2_create_ticket": {
       "ja": "チケットの新規作成",
+      "he": "צור קריאת שירות",
       "en": "Create ticket"
     },
     "fulmo_main_label_summary": {
-      "ja": "概要……", "en": "Summary"
+      "ja": "概要……",
+      "he": "נושא הקריאה",
+      "en": "Summary"
     },
     "fulmo_main_label_reporter": {
-      "ja": "報告者……", "en": "Reporter"
+      "ja": "報告者……",
+      "he": "Reporter",
+      "en": "Reporter"
     },
     "fulmo_main_label_description": {
-      "ja": "詳細……", "en": "Description"
+      "ja": "詳細……",
+      "he": "תיאור קריאת השירות",
+      "en": "Description"
     },
     "fulmo_main_h2_attribute": {
-      "ja": "属性▼", "en": "Properties"
+      "ja": "属性▼",
+      "he": "Properties",
+      "en": "Properties"
     },
     "fulmo_main_button_title_send_ticket": {
-      "ja": "チケットの新規作成", "en": "Create ticket"
+      "ja": "チケットの新規作成",
+      "he": "צור קריאת שירות",
+      "en": "Create ticket"
     },
     "fulmo_main_label_view_ticket": {
       "ja": "このチケットを表示します",
+      "he": "פתח את הקריאה לאחר יצירתה",
       "en": "Show the ticket after creating"
     },
-    
     "fulmo_editor_title": {
       "ja": "スクリーンショットの編集",
+      "he": "עריכת צילום מסך",
       "en": "Edit screenshot"
     },
     "fulmo_editor_btn_save": {
       "ja": "保存",
+      "he": "שמור",
       "en": "Save"
     },
     "fulmo_editor_btn_send": {
       "ja": "チケット登録",
+      "he": "צור קריאת שירות",
       "en": "New Ticket"
     },
     "fulmo_editor_btn_drag": {
       "ja": "ドラッグ&ドロップ",
+      "he": "Drag&Drop",
       "en": "Drag&Drop"
     },
     "fulmo_editor_btn_library": {
       "ja": "ライブラリ",
+      "he": "ספרייה",
       "en": "Library"
     },
-    "fulmo_editor_text_small": { "ja": "小", "en": "Small" },
-    "fulmo_editor_text_middle": { "ja": "標準", "en": "Middle" },
-    "fulmo_editor_text_large": { "ja": "大", "en": "Large" },
-    "fulmo_editor_text_xlarge": { "ja": "特大", "en": "Very large" },
+    "fulmo_editor_text_small": { "ja": "小", "he": "קטן", "en": "Small" },
+    "fulmo_editor_text_middle": { "ja": "標準", "he": "בינוני", "en": "Middle" },
+    "fulmo_editor_text_large": { "ja": "大", "he": "גדול", "en": "Large" },
+    "fulmo_editor_text_xlarge": { "ja": "特大", "he": "מאוד גדול", "en": "Very large" },
     "fulmo_save_image_as": {
       "ja": "画像を保存",
+      "he": "Save image as...",
       "en": "Save image as..."
     },
     "fulmo_not_enough_width": {
       "ja": "ウィンドウが狭すぎるので、ウィンドウ全体のスクリーンショットを撮ることができません。もう少しウィンドウを広げてから実行して下さい。",
+      "he": "לא יכול לצלם מסך כי החלון קטן מדי. נא הגדל את החלון.",
       "en": "Cannot take a screenshot of the entire window because it's too small. Please expand the window size."
     },
     "fulmo_redmine_test_message_url_invalid": {
-      "ja": "URLが正しくありません。プロジェクトの概要ページのURLを指定して下さい。\n例: http://example.com/redmine/projects/foo_proj",
-      "en": "Invalid URL. Please set Please set URL of summary page.\nExample: http://example.com/redmine/projects/foo_proj"
+      "ja": "URLが正しくありません。プロジェクトの概要ページのURLを指定して下さい。\n例: http://example.com/redmine/projects/proj-id",
+      "he": "כתובת לא נכונה, נא להגדיר כתובת תקינה. לדוגמא:\n http://example.com/redmine/projects/proj-id",
+      "en": "Invalid URL. Please set Please set URL of summary page.\nExample: http://example.com/redmine/projects/proj-id"
     },
     "fulmo_redmine_label_project": {
       "ja": "プロジェクト",
+      "he": "פרוייקט",
       "en": "Project"
     },
     "fulmo_redmine_label_tracker": {
       "ja": "トラッカー",
+      "he": "סוג קריאה",
       "en": "Tracker"
     },
     "fulmo_redmine_label_status": {
       "ja": "ステータス",
+      "he": "מצב קריאה",
       "en": "Status"
     },
     "fulmo_redmine_label_priority": {
       "ja": "優先度",
+      "he": "דחיפות",
       "en": "Priority"
     },
     "fulmo_redmine_label_assigned_to": {
       "ja": "担当者",
+      "he": "Assignd to",
       "en": "Assignd to"
     },
     "fulmo_redmine_label_category": {
       "ja": "カテゴリ",
+      "he": "Category",
       "en": "Category"
     },
     "fulmo_redmine_label_fixed_version": {
       "ja": "対象バージョン",
+      "he": "Fixed version",
       "en": "Fixed version"
     },
     "fulmo_redmine_label_parent_issue": {
       "ja": "親チケット",
+      "he": "Parent issue",
       "en": "Parent issue"
     },
     "fulmo_redmine_label_start_date": {
       "ja": "開始日",
+      "he": "תאריך התחלה",
       "en": "Start date"
     },
     "fulmo_redmine_label_due_date": {
       "ja": "期日",
+      "he": "תאריך סיום צפוי:",
       "en": "Due date"
     },
     "fulmo_redmine_label_estimated_hours": {
       "ja": "予定工数",
+      "he": "Estimated hours",
       "en": "Estimated hours"
     },
     "fulmo_redmine_label_done_ratio": {
       "ja": "進捗 %",
+      "he": "Done ratio",
       "en": "Done ratio"
     }
   }
