@@ -57,19 +57,28 @@ fulmo.localFile = {
         if (!picker.file) {
             return;
         }
-        var context = null;
+        var save;
         try {
-            Components.utils.import("resource://gre/modules/PrivateBrowsingUtils.jsm");
-            var mediator = Components.classes["@mozilla.org/appshell/window-mediator;1"]
-                                     .getService(Components.interfaces.nsIWindowMediator);
-            var browser = mediator.getMostRecentWindow("navigator:browser");
-            context = PrivateBrowsingUtils.getPrivacyContextFromWindow(browser);
+            const {Downloads} = Components.utils.import("resource://gre/modules/Downloads.jsm", {});
+            save = function(source, target) {
+                var promise = Downloads.createDownload({source: source, target: target});
+                promise.then(function(download) { download.start() });
+            };
         }
-        catch(e) { }
+        catch (e) {
+            save = function(source, target) {
+                Components.utils.import("resource://gre/modules/PrivateBrowsingUtils.jsm");
+                var mediator = Components.classes["@mozilla.org/appshell/window-mediator;1"]
+                                         .getService(Components.interfaces.nsIWindowMediator);
+                var browser = mediator.getMostRecentWindow("navigator:browser");
+                var context = PrivateBrowsingUtils.getPrivacyContextFromWindow(browser);
+                var persist = WebBrowserPersist();
+                persist.saveURI(source, null, null, null, null, target, context);
+            };
+        }
         callbackDataURL(function(dataURL) {
             var uri = IOService().newURI(dataURL, "UTF8", null);
-            var persist = WebBrowserPersist();
-            persist.saveURI(uri, null, null, null, null, picker.file, context);
+            save(uri, picker.file);
         });
     }
 };
